@@ -38,14 +38,10 @@ let traceCount = 0;
 // ----------------------------------------------------------
 
 const targetScales = [
-    0.15,
-    0.25,
-    0.38,
-    0.55,
-    0.78,
-    1.05,
-    1.4,
-    1.8
+    0.25,  // antes corazón 2
+    0.55,  // antes corazón 4
+    1.05,  // antes corazón 6
+    1.8    // antes corazón 8
 ];
 
 const MAX_SCALE = 2.7;
