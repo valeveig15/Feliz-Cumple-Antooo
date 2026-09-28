@@ -1,28 +1,1219 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Butterfly Heart Tunnel</title>
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+        }
+
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
 </head>
 
 <body>
 
-    <canvas id="canvas"></canvas>
+<canvas id="canvas"></canvas>
 
-    <script src="script.js"></script>
+<script>
+
+// ==========================================================
+// BUTTERFLY HEART TUNNEL
+// TODO EN UN SOLO ARCHIVO
+// Compatible con GitHub Pages
+// ==========================================================
+
+
+// ==========================================================
+// CANVAS
+// ==========================================================
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+let WIDTH;
+let HEIGHT;
+
+let centerX;
+let centerY;
+
+
+// ==========================================================
+// CONFIGURACIÓN
+// ==========================================================
+
+// Cantidad de mariposas en cada corazón
+const BUTTERFLIES = 45;
+
+
+// Solo dejamos los corazones equivalentes a:
+// corazón 2, corazón 4, corazón 6 y corazón 8
+
+const TARGET_SCALES = [
+    0.25,
+    0.55,
+    1.05,
+    1.80
+];
+
+
+// Velocidad con la que se dibuja cada corazón inicialmente
+const BUILD_SPEED = 0.75;
+
+
+// Velocidad del túnel
+const TUNNEL_SPEED = 0.0035;
+
+
+// Tamaño mínimo cuando un corazón reaparece al fondo
+const MIN_SCALE = 0.22;
+
+
+// Tamaño máximo antes de pasar "la cámara"
+const MAX_SCALE = 2.45;
+
+
+// Tamaño general de la forma
+const HEART_SPACING = 15;
+
+
+// ==========================================================
+// ESTADO
+// ==========================================================
+
+const heartPoints = [];
+
+const particles = [];
+
+let activeHearts = [];
+
+let mode = "BUILD";
+
+let buildIndex = 0;
+
+let drawProgress = 0;
+
+
+// ==========================================================
+// RANDOM
+// ==========================================================
+
+function random(min, max) {
+
+    return Math.random() * (max - min) + min;
+
+}
+
+
+// ==========================================================
+// AJUSTAR PANTALLA
+// ==========================================================
+
+function resizeCanvas() {
+
+    const dpr = window.devicePixelRatio || 1;
+
+    WIDTH = window.innerWidth;
+    HEIGHT = window.innerHeight;
+
+    canvas.width = WIDTH * dpr;
+    canvas.height = HEIGHT * dpr;
+
+    canvas.style.width = WIDTH + "px";
+    canvas.style.height = HEIGHT + "px";
+
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
+
+    centerX = WIDTH / 2;
+    centerY = HEIGHT / 2;
+}
+
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+
+resizeCanvas();
+
+
+// ==========================================================
+// CREAR FORMA MATEMÁTICA DEL CORAZÓN
+// ==========================================================
+
+for (let i = 0; i < BUTTERFLIES; i++) {
+
+    const t =
+        i *
+        Math.PI *
+        2 /
+        BUTTERFLIES;
+
+
+    const x =
+        16 *
+        Math.pow(
+            Math.sin(t),
+            3
+        );
+
+
+    const y =
+        -(
+            13 * Math.cos(t)
+            -
+            5 * Math.cos(2 * t)
+            -
+            2 * Math.cos(3 * t)
+            -
+            Math.cos(4 * t)
+        );
+
+
+    heartPoints.push({
+
+        x: x,
+
+        y: y,
+
+        rotation:
+            random(
+                -0.20,
+                0.20
+            ),
+
+        flapSpeed:
+            random(
+                0.004,
+                0.008
+            ),
+
+        flapOffset:
+            random(
+                0,
+                Math.PI * 2
+            )
+
+    });
+
+}
+
+
+// ==========================================================
+// DIBUJAR UNA MARIPOSA
+// ==========================================================
+
+function drawButterfly(
+    x,
+    y,
+    size,
+    flap,
+    rotation
+) {
+
+    ctx.save();
+
+    ctx.translate(x, y);
+
+    ctx.rotate(rotation);
+
+
+    // ------------------------------------------------------
+    // RESPLANDOR
+    // ------------------------------------------------------
+
+    ctx.shadowColor =
+        "rgba(200, 70, 255, 0.95)";
+
+    ctx.shadowBlur =
+        Math.max(
+            6,
+            size * 0.65
+        );
+
+
+    // ------------------------------------------------------
+    // ANCHO DE ALAS
+    // ------------------------------------------------------
+
+    const wingWidth =
+        size *
+        (
+            0.28 +
+            flap * 0.72
+        );
+
+    const wingHeight =
+        size;
+
+
+    // ======================================================
+    // ALA SUPERIOR IZQUIERDA
+    // ======================================================
+
+    ctx.beginPath();
+
+    ctx.moveTo(0, 0);
+
+    ctx.bezierCurveTo(
+
+        -wingWidth * 0.35,
+        -wingHeight * 0.30,
+
+        -wingWidth,
+        -wingHeight * 0.58,
+
+        -wingWidth * 0.92,
+        -wingHeight * 0.08
+
+    );
+
+    ctx.bezierCurveTo(
+
+        -wingWidth * 0.70,
+        wingHeight * 0.03,
+
+        -wingWidth * 0.25,
+        wingHeight * 0.10,
+
+        0,
+        0
+
+    );
+
+    ctx.fillStyle =
+        "rgba(95, 15, 180, 0.97)";
+
+    ctx.fill();
+
+
+    // ======================================================
+    // ALA SUPERIOR DERECHA
+    // ======================================================
+
+    ctx.beginPath();
+
+    ctx.moveTo(0, 0);
+
+    ctx.bezierCurveTo(
+
+        wingWidth * 0.35,
+        -wingHeight * 0.30,
+
+        wingWidth,
+        -wingHeight * 0.58,
+
+        wingWidth * 0.92,
+        -wingHeight * 0.08
+
+    );
+
+    ctx.bezierCurveTo(
+
+        wingWidth * 0.70,
+        wingHeight * 0.03,
+
+        wingWidth * 0.25,
+        wingHeight * 0.10,
+
+        0,
+        0
+
+    );
+
+    ctx.fillStyle =
+        "rgba(95, 15, 180, 0.97)";
+
+    ctx.fill();
+
+
+    // ======================================================
+    // ALA INFERIOR IZQUIERDA
+    // ======================================================
+
+    ctx.beginPath();
+
+    ctx.moveTo(0, 0);
+
+    ctx.bezierCurveTo(
+
+        -wingWidth * 0.25,
+        wingHeight * 0.12,
+
+        -wingWidth * 0.72,
+        wingHeight * 0.62,
+
+        -wingWidth * 0.40,
+        wingHeight * 0.72
+
+    );
+
+    ctx.bezierCurveTo(
+
+        -wingWidth * 0.15,
+        wingHeight * 0.66,
+
+        -wingWidth * 0.08,
+        wingHeight * 0.20,
+
+        0,
+        0
+
+    );
+
+    ctx.fillStyle =
+        "rgba(180, 70, 230, 0.97)";
+
+    ctx.fill();
+
+
+    // ======================================================
+    // ALA INFERIOR DERECHA
+    // ======================================================
+
+    ctx.beginPath();
+
+    ctx.moveTo(0, 0);
+
+    ctx.bezierCurveTo(
+
+        wingWidth * 0.25,
+        wingHeight * 0.12,
+
+        wingWidth * 0.72,
+        wingHeight * 0.62,
+
+        wingWidth * 0.40,
+        wingHeight * 0.72
+
+    );
+
+    ctx.bezierCurveTo(
+
+        wingWidth * 0.15,
+        wingHeight * 0.66,
+
+        wingWidth * 0.08,
+        wingHeight * 0.20,
+
+        0,
+        0
+
+    );
+
+    ctx.fillStyle =
+        "rgba(180, 70, 230, 0.97)";
+
+    ctx.fill();
+
+
+    // ======================================================
+    // DETALLES LUMINOSOS
+    // ======================================================
+
+    ctx.shadowBlur = 0;
+
+    ctx.fillStyle =
+        "rgba(240, 150, 255, 0.90)";
+
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+
+        -wingWidth * 0.43,
+
+        -wingHeight * 0.12,
+
+        Math.max(
+            1,
+            wingWidth * 0.16
+        ),
+
+        Math.max(
+            1,
+            wingHeight * 0.15
+        ),
+
+        -0.4,
+
+        0,
+
+        Math.PI * 2
+
+    );
+
+    ctx.fill();
+
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+
+        wingWidth * 0.43,
+
+        -wingHeight * 0.12,
+
+        Math.max(
+            1,
+            wingWidth * 0.16
+        ),
+
+        Math.max(
+            1,
+            wingHeight * 0.15
+        ),
+
+        0.4,
+
+        0,
+
+        Math.PI * 2
+
+    );
+
+    ctx.fill();
+
+
+    // ======================================================
+    // CUERPO
+    // ======================================================
+
+    ctx.fillStyle =
+        "#080010";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+
+        0,
+
+        size * 0.07,
+
+        Math.max(
+            1,
+            size * 0.055
+        ),
+
+        Math.max(
+            2,
+            size * 0.34
+        ),
+
+        0,
+
+        0,
+
+        Math.PI * 2
+
+    );
+
+    ctx.fill();
+
+
+    // ======================================================
+    // ANTENAS
+    // ======================================================
+
+    ctx.strokeStyle =
+        "rgba(225, 160, 255, 0.95)";
+
+    ctx.lineWidth =
+        Math.max(
+            0.5,
+            size * 0.015
+        );
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        -size * 0.02,
+        -size * 0.20
+    );
+
+    ctx.quadraticCurveTo(
+
+        -size * 0.12,
+        -size * 0.35,
+
+        -size * 0.21,
+        -size * 0.47
+
+    );
+
+    ctx.stroke();
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        size * 0.02,
+        -size * 0.20
+    );
+
+    ctx.quadraticCurveTo(
+
+        size * 0.12,
+        -size * 0.35,
+
+        size * 0.21,
+        -size * 0.47
+
+    );
+
+    ctx.stroke();
+
+
+    ctx.restore();
+
+}
+
+
+// ==========================================================
+// CREAR PARTÍCULA
+// ==========================================================
+
+function createParticle(
+    x,
+    y,
+    butterflySize
+) {
+
+    if (particles.length > 300) {
+        return;
+    }
+
+
+    const life =
+        random(
+            30,
+            60
+        );
+
+
+    particles.push({
+
+        x:
+            x +
+            random(
+                -butterflySize / 3,
+                butterflySize / 3
+            ),
+
+        y:
+            y +
+            random(
+                -butterflySize / 3,
+                butterflySize / 3
+            ),
+
+        dx:
+            random(
+                -0.25,
+                0.25
+            ),
+
+        dy:
+            random(
+                -0.40,
+                0.05
+            ),
+
+        size:
+            random(
+                1,
+                3
+            ),
+
+        life:
+            life,
+
+        maxLife:
+            life
+
+    });
+
+}
+
+
+// ==========================================================
+// ACTUALIZAR PARTÍCULAS
+// ==========================================================
+
+function updateParticles() {
+
+    for (
+        let i = particles.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const p =
+            particles[i];
+
+
+        p.x +=
+            p.dx;
+
+
+        p.y +=
+            p.dy;
+
+
+        p.life--;
+
+
+        if (p.life <= 0) {
+
+            particles.splice(
+                i,
+                1
+            );
+
+            continue;
+
+        }
+
+
+        const alpha =
+            p.life /
+            p.maxLife;
+
+
+        ctx.save();
+
+
+        ctx.globalAlpha =
+            alpha;
+
+
+        ctx.fillStyle =
+            "#d785ff";
+
+
+        ctx.shadowColor =
+            "#c05cff";
+
+
+        ctx.shadowBlur =
+            8;
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+
+            p.x,
+
+            p.y,
+
+            Math.max(
+                0.5,
+                p.size * alpha
+            ),
+
+            0,
+
+            Math.PI * 2
+
+        );
+
+
+        ctx.fill();
+
+
+        ctx.restore();
+
+    }
+
+}
+
+
+// ==========================================================
+// DIBUJAR UN CORAZÓN COMPLETO
+// ==========================================================
+
+function drawHeart(
+    scale,
+    limit,
+    time
+) {
+
+    const amount =
+        Math.min(
+            limit,
+            BUTTERFLIES
+        );
+
+
+    for (
+        let i = 0;
+        i < amount;
+        i++
+    ) {
+
+        const point =
+            heartPoints[i];
+
+
+        const x =
+            centerX +
+            point.x *
+            scale *
+            HEART_SPACING;
+
+
+        const y =
+            centerY +
+            point.y *
+            scale *
+            HEART_SPACING;
+
+
+        // --------------------------------------------------
+        // No perder tiempo dibujando demasiado lejos
+        // --------------------------------------------------
+
+        if (
+
+            x < -250
+
+            ||
+
+            x > WIDTH + 250
+
+            ||
+
+            y < -250
+
+            ||
+
+            y > HEIGHT + 250
+
+        ) {
+
+            continue;
+
+        }
+
+
+        // --------------------------------------------------
+        // ALETEO
+        // --------------------------------------------------
+
+        const flap =
+            Math.abs(
+
+                Math.sin(
+
+                    time *
+                    point.flapSpeed
+                    +
+                    point.flapOffset
+
+                )
+
+            );
+
+
+        // --------------------------------------------------
+        // TAMAÑO
+        // --------------------------------------------------
+
+        const size =
+            7 +
+            scale * 14;
+
+
+        // --------------------------------------------------
+        // MARIPOSA
+        // --------------------------------------------------
+
+        drawButterfly(
+
+            x,
+
+            y,
+
+            size,
+
+            flap,
+
+            point.rotation
+
+        );
+
+
+        // --------------------------------------------------
+        // PARTÍCULAS
+        // --------------------------------------------------
+
+        if (
+            Math.random() <
+            0.014
+        ) {
+
+            createParticle(
+                x,
+                y,
+                size
+            );
+
+        }
+
+    }
+
+}
+
+
+// ==========================================================
+// FONDO
+// ==========================================================
+
+function drawBackground() {
+
+    const gradient =
+        ctx.createRadialGradient(
+
+            centerX,
+            centerY,
+            0,
+
+            centerX,
+            centerY,
+
+            Math.max(
+                WIDTH,
+                HEIGHT
+            ) * 0.75
+
+        );
+
+
+    gradient.addColorStop(
+        0,
+        "#09001d"
+    );
+
+
+    gradient.addColorStop(
+        0.42,
+        "#03000c"
+    );
+
+
+    gradient.addColorStop(
+        1,
+        "#000000"
+    );
+
+
+    ctx.fillStyle =
+        gradient;
+
+
+    ctx.fillRect(
+        0,
+        0,
+        WIDTH,
+        HEIGHT
+    );
+
+
+    // Luz violeta en el centro
+
+    const glow =
+        ctx.createRadialGradient(
+
+            centerX,
+            centerY,
+            0,
+
+            centerX,
+            centerY,
+
+            Math.min(
+                WIDTH,
+                HEIGHT
+            ) * 0.30
+
+        );
+
+
+    glow.addColorStop(
+        0,
+        "rgba(110, 20, 190, 0.10)"
+    );
+
+
+    glow.addColorStop(
+        1,
+        "rgba(0,0,0,0)"
+    );
+
+
+    ctx.fillStyle =
+        glow;
+
+
+    ctx.fillRect(
+        0,
+        0,
+        WIDTH,
+        HEIGHT
+    );
+
+}
+
+
+// ==========================================================
+// CONSTRUIR CORAZONES INICIALES
+// ==========================================================
+
+function buildHearts(time) {
+
+    // Dibujar los ya terminados
+
+    for (
+        let i = 0;
+        i < activeHearts.length;
+        i++
+    ) {
+
+        drawHeart(
+
+            activeHearts[i],
+
+            BUTTERFLIES,
+
+            time
+
+        );
+
+    }
+
+
+    // ------------------------------------------------------
+    // Construir siguiente
+    // ------------------------------------------------------
+
+    if (
+        buildIndex <
+        TARGET_SCALES.length
+    ) {
+
+        const scale =
+            TARGET_SCALES[
+                buildIndex
+            ];
+
+
+        drawProgress +=
+            BUILD_SPEED;
+
+
+        drawHeart(
+
+            scale,
+
+            Math.floor(
+                drawProgress
+            ),
+
+            time
+
+        );
+
+
+        if (
+            drawProgress >=
+            BUTTERFLIES
+        ) {
+
+            activeHearts.push(
+                scale
+            );
+
+
+            buildIndex++;
+
+
+            drawProgress =
+                0;
+
+        }
+
+    }
+
+    else {
+
+        mode =
+            "TUNNEL";
+
+    }
+
+}
+
+
+// ==========================================================
+// TÚNEL INFINITO
+// ==========================================================
+
+function tunnelAnimation(time) {
+
+    // ------------------------------------------------------
+    // Aumentar tamaño
+    // ------------------------------------------------------
+
+    for (
+        let i = 0;
+        i < activeHearts.length;
+        i++
+    ) {
+
+        activeHearts[i] *=
+            1 + TUNNEL_SPEED;
+
+    }
+
+
+    // ------------------------------------------------------
+    // Cuando uno pasa la cámara,
+    // vuelve al fondo
+    // ------------------------------------------------------
+
+    for (
+        let i = 0;
+        i < activeHearts.length;
+        i++
+    ) {
+
+        if (
+            activeHearts[i] >
+            MAX_SCALE
+        ) {
+
+            activeHearts[i] =
+                MIN_SCALE;
+
+        }
+
+    }
+
+
+    // ------------------------------------------------------
+    // Ordenarlos desde el más lejano
+    // al más cercano
+    // ------------------------------------------------------
+
+    const sortedHearts =
+        [...activeHearts]
+        .sort(
+            (a, b) =>
+                a - b
+        );
+
+
+    // ------------------------------------------------------
+    // Dibujar
+    // ------------------------------------------------------
+
+    for (
+        let i = 0;
+        i < sortedHearts.length;
+        i++
+    ) {
+
+        drawHeart(
+
+            sortedHearts[i],
+
+            BUTTERFLIES,
+
+            time
+
+        );
+
+    }
+
+}
+
+
+// ==========================================================
+// LOOP PRINCIPAL
+// ==========================================================
+
+function animate(time) {
+
+    drawBackground();
+
+
+    if (
+        mode === "BUILD"
+    ) {
+
+        buildHearts(
+            time
+        );
+
+    }
+
+    else {
+
+        tunnelAnimation(
+            time
+        );
+
+    }
+
+
+    updateParticles();
+
+
+    requestAnimationFrame(
+        animate
+    );
+
+}
+
+
+// ==========================================================
+// INICIAR
+// ==========================================================
+
+requestAnimationFrame(
+    animate
+);
+
+</script>
 
 </body>
-
 </html>
