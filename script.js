@@ -52,7 +52,7 @@ const MAX_SCALE = 2.7;
 
 const MIN_SCALE = 0.12;
 
-const GROWTH_SPEED = 0.0022;
+traceCount += 0.7;
 
 const HEART_SPACING = 15;
 
