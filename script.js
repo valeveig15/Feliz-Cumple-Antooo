@@ -52,7 +52,7 @@ const MAX_SCALE = 2.7;
 
 const MIN_SCALE = 0.12;
 
-traceCount += 1.2;
+traceCount += 2.0;
 
 const HEART_SPACING = 15;
 
