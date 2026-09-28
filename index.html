@@ -1,32 +1,41 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Butterfly Heart Tunnel</title>
+<meta charset="UTF-8">
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: #000;
-        }
+<title>Butterfly Heart + Photomosaic</title>
 
-        canvas {
-            display: block;
-            width: 100vw;
-            height: 100vh;
-        }
-    </style>
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: black;
+}
+
+canvas {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+}
+
+</style>
+
 </head>
 
 <body>
@@ -36,63 +45,56 @@
 <script>
 
 // ==========================================================
-// BUTTERFLY HEART TUNNEL
-// TODO EN UN SOLO ARCHIVO
-// Compatible con GitHub Pages
-// ==========================================================
-
-
-// ==========================================================
 // CANVAS
 // ==========================================================
 
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+const canvas =
+    document.getElementById("canvas");
 
-let WIDTH;
-let HEIGHT;
+const ctx =
+    canvas.getContext("2d");
 
-let centerX;
-let centerY;
+let WIDTH = 0;
+let HEIGHT = 0;
+
+let centerX = 0;
+let centerY = 0;
 
 
 // ==========================================================
-// CONFIGURACIÓN
+// CONFIGURACIÓN DE LOS CORAZONES
 // ==========================================================
 
-// Cantidad de mariposas en cada corazón
 const BUTTERFLIES = 45;
 
-
-// Solo dejamos los corazones equivalentes a:
-// corazón 2, corazón 4, corazón 6 y corazón 8
-
 const TARGET_SCALES = [
+
     0.25,
+
     0.55,
+
     1.05,
+
     1.80
+
 ];
 
-
-// Velocidad con la que se dibuja cada corazón inicialmente
 const BUILD_SPEED = 0.75;
 
-
-// Velocidad del túnel
 const TUNNEL_SPEED = 0.0035;
 
-
-// Tamaño mínimo cuando un corazón reaparece al fondo
 const MIN_SCALE = 0.22;
 
-
-// Tamaño máximo antes de pasar "la cámara"
 const MAX_SCALE = 2.45;
 
-
-// Tamaño general de la forma
 const HEART_SPACING = 15;
+
+
+// ==========================================================
+// CUÁNTO TIEMPO SE VE EL TÚNEL ANTES DEL FOTOMOSAICO
+// ==========================================================
+
+const TUNNEL_BEFORE_MOSAIC_MS = 5000;
 
 
 // ==========================================================
@@ -111,6 +113,93 @@ let buildIndex = 0;
 
 let drawProgress = 0;
 
+let tunnelStartTime = null;
+
+
+// ==========================================================
+// CARGAR IMAGEN
+// ==========================================================
+
+const photo = new Image();
+
+let photoLoaded = false;
+
+let photoFailed = false;
+
+
+photo.onload = function () {
+
+    photoLoaded = true;
+
+};
+
+
+photo.onerror = function () {
+
+    photoFailed = true;
+
+};
+
+
+photo.src = "image.png";
+
+
+// ==========================================================
+// CONFIGURACIÓN DEL FOTOMOSAICO
+// ==========================================================
+
+const mosaic = {
+
+    ready: false,
+
+    cols: 70,
+
+    rows: 70,
+
+    tileW: 1,
+
+    tileH: 1,
+
+    w: 0,
+
+    h: 0,
+
+    xOff: 0,
+
+    yOff: 0,
+
+    processedCanvas: null,
+
+    mosaicCanvas: null,
+
+    tiles: [],
+
+    centerColor: [255, 255, 255],
+
+    phase: "SWARM_IN",
+
+    phaseStart: 0,
+
+    durations: {
+
+        SWARM_IN: 1200,
+
+        HOLD_MOSAIC_1: 1000,
+
+        ZOOM_IN: 1920,
+
+        HOLD_IMAGE: 2500,
+
+        ZOOM_OUT: 1920,
+
+        HOLD_MOSAIC_2: 1200,
+
+        SWARM_OUT: 1200
+
+    }
+
+};
+
 
 // ==========================================================
 // RANDOM
@@ -118,45 +207,97 @@ let drawProgress = 0;
 
 function random(min, max) {
 
-    return Math.random() * (max - min) + min;
+    return (
+        Math.random() *
+        (max - min) +
+        min
+    );
 
 }
 
 
 // ==========================================================
-// AJUSTAR PANTALLA
+// AJUSTAR CANVAS
 // ==========================================================
 
 function resizeCanvas() {
 
-    const dpr = window.devicePixelRatio || 1;
+    const dpr =
+        window.devicePixelRatio || 1;
 
-    WIDTH = window.innerWidth;
-    HEIGHT = window.innerHeight;
 
-    canvas.width = WIDTH * dpr;
-    canvas.height = HEIGHT * dpr;
+    WIDTH =
+        window.innerWidth;
 
-    canvas.style.width = WIDTH + "px";
-    canvas.style.height = HEIGHT + "px";
+    HEIGHT =
+        window.innerHeight;
+
+
+    canvas.width =
+        Math.round(
+            WIDTH * dpr
+        );
+
+    canvas.height =
+        Math.round(
+            HEIGHT * dpr
+        );
+
+
+    canvas.style.width =
+        WIDTH + "px";
+
+    canvas.style.height =
+        HEIGHT + "px";
+
 
     ctx.setTransform(
+
         dpr,
+
         0,
+
         0,
+
         dpr,
+
         0,
+
         0
+
     );
 
-    centerX = WIDTH / 2;
-    centerY = HEIGHT / 2;
+
+    centerX =
+        WIDTH / 2;
+
+    centerY =
+        HEIGHT / 2;
+
+
+    if (mosaic.ready) {
+
+        mosaic.xOff =
+            Math.round(
+                (WIDTH - mosaic.w) / 2
+            );
+
+        mosaic.yOff =
+            Math.round(
+                (HEIGHT - mosaic.h) / 2
+            );
+
+    }
+
 }
 
 
 window.addEventListener(
+
     "resize",
+
     resizeCanvas
+
 );
 
 
@@ -164,12 +305,17 @@ resizeCanvas();
 
 
 // ==========================================================
-// CREAR FORMA MATEMÁTICA DEL CORAZÓN
+// CREAR FORMA DEL CORAZÓN
 // ==========================================================
 
-for (let i = 0; i < BUTTERFLIES; i++) {
+for (
+    let i = 0;
+    i < BUTTERFLIES;
+    i++
+) {
 
     const t =
+
         i *
         Math.PI *
         2 /
@@ -177,7 +323,9 @@ for (let i = 0; i < BUTTERFLIES; i++) {
 
 
     const x =
+
         16 *
+
         Math.pow(
             Math.sin(t),
             3
@@ -185,14 +333,23 @@ for (let i = 0; i < BUTTERFLIES; i++) {
 
 
     const y =
+
         -(
+
             13 * Math.cos(t)
+
             -
+
             5 * Math.cos(2 * t)
+
             -
+
             2 * Math.cos(3 * t)
+
             -
+
             Math.cos(4 * t)
+
         );
 
 
@@ -226,30 +383,40 @@ for (let i = 0; i < BUTTERFLIES; i++) {
 
 
 // ==========================================================
-// DIBUJAR UNA MARIPOSA
+// DIBUJAR MARIPOSA
 // ==========================================================
 
 function drawButterfly(
+
     x,
+
     y,
+
     size,
+
     flap,
+
     rotation
+
 ) {
 
     ctx.save();
 
-    ctx.translate(x, y);
 
-    ctx.rotate(rotation);
+    ctx.translate(
+        x,
+        y
+    );
 
 
-    // ------------------------------------------------------
-    // RESPLANDOR
-    // ------------------------------------------------------
+    ctx.rotate(
+        rotation
+    );
+
 
     ctx.shadowColor =
-        "rgba(200, 70, 255, 0.95)";
+        "rgba(200,70,255,0.95)";
+
 
     ctx.shadowBlur =
         Math.max(
@@ -258,16 +425,15 @@ function drawButterfly(
         );
 
 
-    // ------------------------------------------------------
-    // ANCHO DE ALAS
-    // ------------------------------------------------------
-
     const wingWidth =
+
         size *
+
         (
             0.28 +
             flap * 0.72
         );
+
 
     const wingHeight =
         size;
@@ -279,7 +445,10 @@ function drawButterfly(
 
     ctx.beginPath();
 
-    ctx.moveTo(0, 0);
+    ctx.moveTo(
+        0,
+        0
+    );
 
     ctx.bezierCurveTo(
 
@@ -308,7 +477,7 @@ function drawButterfly(
     );
 
     ctx.fillStyle =
-        "rgba(95, 15, 180, 0.97)";
+        "rgba(95,15,180,0.97)";
 
     ctx.fill();
 
@@ -319,7 +488,10 @@ function drawButterfly(
 
     ctx.beginPath();
 
-    ctx.moveTo(0, 0);
+    ctx.moveTo(
+        0,
+        0
+    );
 
     ctx.bezierCurveTo(
 
@@ -348,7 +520,7 @@ function drawButterfly(
     );
 
     ctx.fillStyle =
-        "rgba(95, 15, 180, 0.97)";
+        "rgba(95,15,180,0.97)";
 
     ctx.fill();
 
@@ -359,7 +531,10 @@ function drawButterfly(
 
     ctx.beginPath();
 
-    ctx.moveTo(0, 0);
+    ctx.moveTo(
+        0,
+        0
+    );
 
     ctx.bezierCurveTo(
 
@@ -388,7 +563,7 @@ function drawButterfly(
     );
 
     ctx.fillStyle =
-        "rgba(180, 70, 230, 0.97)";
+        "rgba(180,70,230,0.97)";
 
     ctx.fill();
 
@@ -399,7 +574,10 @@ function drawButterfly(
 
     ctx.beginPath();
 
-    ctx.moveTo(0, 0);
+    ctx.moveTo(
+        0,
+        0
+    );
 
     ctx.bezierCurveTo(
 
@@ -428,19 +606,20 @@ function drawButterfly(
     );
 
     ctx.fillStyle =
-        "rgba(180, 70, 230, 0.97)";
+        "rgba(180,70,230,0.97)";
 
     ctx.fill();
 
 
     // ======================================================
-    // DETALLES LUMINOSOS
+    // DETALLES DE LAS ALAS
     // ======================================================
 
     ctx.shadowBlur = 0;
 
+
     ctx.fillStyle =
-        "rgba(240, 150, 255, 0.90)";
+        "rgba(240,150,255,0.90)";
 
 
     ctx.beginPath();
@@ -508,7 +687,9 @@ function drawButterfly(
     ctx.fillStyle =
         "#080010";
 
+
     ctx.beginPath();
+
 
     ctx.ellipse(
 
@@ -534,6 +715,7 @@ function drawButterfly(
 
     );
 
+
     ctx.fill();
 
 
@@ -542,7 +724,8 @@ function drawButterfly(
     // ======================================================
 
     ctx.strokeStyle =
-        "rgba(225, 160, 255, 0.95)";
+        "rgba(225,160,255,0.95)";
+
 
     ctx.lineWidth =
         Math.max(
@@ -554,16 +737,21 @@ function drawButterfly(
     ctx.beginPath();
 
     ctx.moveTo(
+
         -size * 0.02,
+
         -size * 0.20
+
     );
 
     ctx.quadraticCurveTo(
 
         -size * 0.12,
+
         -size * 0.35,
 
         -size * 0.21,
+
         -size * 0.47
 
     );
@@ -574,16 +762,21 @@ function drawButterfly(
     ctx.beginPath();
 
     ctx.moveTo(
+
         size * 0.02,
+
         -size * 0.20
+
     );
 
     ctx.quadraticCurveTo(
 
         size * 0.12,
+
         -size * 0.35,
 
         size * 0.21,
+
         -size * 0.47
 
     );
@@ -597,21 +790,30 @@ function drawButterfly(
 
 
 // ==========================================================
-// CREAR PARTÍCULA
+// PARTÍCULAS
 // ==========================================================
 
 function createParticle(
+
     x,
+
     y,
+
     butterflySize
+
 ) {
 
-    if (particles.length > 300) {
+    if (
+        particles.length > 300
+    ) {
+
         return;
+
     }
 
 
     const life =
+
         random(
             30,
             60
@@ -663,15 +865,14 @@ function createParticle(
 }
 
 
-// ==========================================================
-// ACTUALIZAR PARTÍCULAS
-// ==========================================================
-
 function updateParticles() {
 
     for (
-        let i = particles.length - 1;
+        let i =
+            particles.length - 1;
+
         i >= 0;
+
         i--
     ) {
 
@@ -682,7 +883,6 @@ function updateParticles() {
         p.x +=
             p.dx;
 
-
         p.y +=
             p.dy;
 
@@ -690,7 +890,9 @@ function updateParticles() {
         p.life--;
 
 
-        if (p.life <= 0) {
+        if (
+            p.life <= 0
+        ) {
 
             particles.splice(
                 i,
@@ -703,6 +905,7 @@ function updateParticles() {
 
 
         const alpha =
+
             p.life /
             p.maxLife;
 
@@ -758,16 +961,21 @@ function updateParticles() {
 
 
 // ==========================================================
-// DIBUJAR UN CORAZÓN COMPLETO
+// DIBUJAR CORAZÓN
 // ==========================================================
 
 function drawHeart(
+
     scale,
+
     limit,
+
     time
+
 ) {
 
     const amount =
+
         Math.min(
             limit,
             BUTTERFLIES
@@ -785,36 +993,30 @@ function drawHeart(
 
 
         const x =
+
             centerX +
+
             point.x *
             scale *
             HEART_SPACING;
 
 
         const y =
+
             centerY +
+
             point.y *
             scale *
             HEART_SPACING;
 
 
-        // --------------------------------------------------
-        // No perder tiempo dibujando demasiado lejos
-        // --------------------------------------------------
-
         if (
 
-            x < -250
+            x < -250 ||
 
-            ||
+            x > WIDTH + 250 ||
 
-            x > WIDTH + 250
-
-            ||
-
-            y < -250
-
-            ||
+            y < -250 ||
 
             y > HEIGHT + 250
 
@@ -825,18 +1027,15 @@ function drawHeart(
         }
 
 
-        // --------------------------------------------------
-        // ALETEO
-        // --------------------------------------------------
-
         const flap =
+
             Math.abs(
 
                 Math.sin(
 
                     time *
-                    point.flapSpeed
-                    +
+                    point.flapSpeed +
+
                     point.flapOffset
 
                 )
@@ -844,18 +1043,12 @@ function drawHeart(
             );
 
 
-        // --------------------------------------------------
-        // TAMAÑO
-        // --------------------------------------------------
-
         const size =
+
             7 +
+
             scale * 14;
 
-
-        // --------------------------------------------------
-        // MARIPOSA
-        // --------------------------------------------------
 
         drawButterfly(
 
@@ -872,19 +1065,18 @@ function drawHeart(
         );
 
 
-        // --------------------------------------------------
-        // PARTÍCULAS
-        // --------------------------------------------------
-
         if (
-            Math.random() <
-            0.014
+            Math.random() < 0.014
         ) {
 
             createParticle(
+
                 x,
+
                 y,
+
                 size
+
             );
 
         }
@@ -895,19 +1087,23 @@ function drawHeart(
 
 
 // ==========================================================
-// FONDO
+// FONDO DEL TÚNEL
 // ==========================================================
 
-function drawBackground() {
+function drawHeartBackground() {
 
     const gradient =
+
         ctx.createRadialGradient(
 
             centerX,
+
             centerY,
+
             0,
 
             centerX,
+
             centerY,
 
             Math.max(
@@ -919,20 +1115,29 @@ function drawBackground() {
 
 
     gradient.addColorStop(
+
         0,
+
         "#09001d"
+
     );
 
 
     gradient.addColorStop(
+
         0.42,
+
         "#03000c"
+
     );
 
 
     gradient.addColorStop(
+
         1,
+
         "#000000"
+
     );
 
 
@@ -941,23 +1146,30 @@ function drawBackground() {
 
 
     ctx.fillRect(
+
         0,
+
         0,
+
         WIDTH,
+
         HEIGHT
+
     );
 
 
-    // Luz violeta en el centro
-
     const glow =
+
         ctx.createRadialGradient(
 
             centerX,
+
             centerY,
+
             0,
 
             centerX,
+
             centerY,
 
             Math.min(
@@ -969,14 +1181,20 @@ function drawBackground() {
 
 
     glow.addColorStop(
+
         0,
-        "rgba(110, 20, 190, 0.10)"
+
+        "rgba(110,20,190,0.10)"
+
     );
 
 
     glow.addColorStop(
+
         1,
+
         "rgba(0,0,0,0)"
+
     );
 
 
@@ -985,32 +1203,34 @@ function drawBackground() {
 
 
     ctx.fillRect(
+
         0,
+
         0,
+
         WIDTH,
+
         HEIGHT
+
     );
 
 }
 
 
 // ==========================================================
-// CONSTRUIR CORAZONES INICIALES
+// CONSTRUCCIÓN INICIAL
 // ==========================================================
 
 function buildHearts(time) {
 
-    // Dibujar los ya terminados
-
     for (
-        let i = 0;
-        i < activeHearts.length;
-        i++
+        const scale
+        of activeHearts
     ) {
 
         drawHeart(
 
-            activeHearts[i],
+            scale,
 
             BUTTERFLIES,
 
@@ -1021,16 +1241,13 @@ function buildHearts(time) {
     }
 
 
-    // ------------------------------------------------------
-    // Construir siguiente
-    // ------------------------------------------------------
-
     if (
         buildIndex <
         TARGET_SCALES.length
     ) {
 
         const scale =
+
             TARGET_SCALES[
                 buildIndex
             ];
@@ -1078,20 +1295,20 @@ function buildHearts(time) {
         mode =
             "TUNNEL";
 
+
+        tunnelStartTime =
+            time;
+
     }
 
 }
 
 
 // ==========================================================
-// TÚNEL INFINITO
+// TÚNEL
 // ==========================================================
 
 function tunnelAnimation(time) {
-
-    // ------------------------------------------------------
-    // Aumentar tamaño
-    // ------------------------------------------------------
 
     for (
         let i = 0;
@@ -1100,21 +1317,11 @@ function tunnelAnimation(time) {
     ) {
 
         activeHearts[i] *=
-            1 + TUNNEL_SPEED;
 
-    }
+            1 +
 
+            TUNNEL_SPEED;
 
-    // ------------------------------------------------------
-    // Cuando uno pasa la cámara,
-    // vuelve al fondo
-    // ------------------------------------------------------
-
-    for (
-        let i = 0;
-        i < activeHearts.length;
-        i++
-    ) {
 
         if (
             activeHearts[i] >
@@ -1129,32 +1336,26 @@ function tunnelAnimation(time) {
     }
 
 
-    // ------------------------------------------------------
-    // Ordenarlos desde el más lejano
-    // al más cercano
-    // ------------------------------------------------------
+    const sorted =
 
-    const sortedHearts =
         [...activeHearts]
+
         .sort(
+
             (a, b) =>
                 a - b
+
         );
 
 
-    // ------------------------------------------------------
-    // Dibujar
-    // ------------------------------------------------------
-
     for (
-        let i = 0;
-        i < sortedHearts.length;
-        i++
+        const scale
+        of sorted
     ) {
 
         drawHeart(
 
-            sortedHearts[i],
+            scale,
 
             BUTTERFLIES,
 
@@ -1163,6 +1364,1753 @@ function tunnelAnimation(time) {
         );
 
     }
+
+
+    // ======================================================
+    // DESPUÉS DE 5 SEGUNDOS PASAR AL FOTOMOSAICO
+    // ======================================================
+
+    if (
+        tunnelStartTime === null
+    ) {
+
+        tunnelStartTime =
+            time;
+
+    }
+
+
+    if (
+
+        time - tunnelStartTime
+        >=
+        TUNNEL_BEFORE_MOSAIC_MS
+
+        &&
+
+        photoLoaded
+
+    ) {
+
+        initMosaic(
+            time
+        );
+
+
+        mode =
+            "MOSAIC";
+
+    }
+
+}
+
+
+// ==========================================================
+// PREPARAR FOTOMOSAICO
+// ==========================================================
+
+function initMosaic(time) {
+
+    let availableW =
+        Math.max(
+            150,
+            WIDTH - 100
+        );
+
+
+    let availableH =
+        Math.max(
+            150,
+            HEIGHT - 100
+        );
+
+
+    const maxDim =
+
+        Math.min(
+
+            900,
+
+            availableW,
+
+            availableH
+
+        );
+
+
+    const imgW =
+        photo.naturalWidth;
+
+
+    const imgH =
+        photo.naturalHeight;
+
+
+    const scale =
+
+        Math.min(
+
+            1,
+
+            maxDim /
+            Math.max(
+                imgW,
+                imgH
+            )
+
+        );
+
+
+    let displayW =
+
+        Math.max(
+
+            mosaic.cols,
+
+            Math.floor(
+                imgW * scale
+            )
+
+        );
+
+
+    let displayH =
+
+        Math.max(
+
+            mosaic.rows,
+
+            Math.floor(
+                imgH * scale
+            )
+
+        );
+
+
+    mosaic.tileW =
+
+        Math.max(
+
+            1,
+
+            Math.floor(
+                displayW /
+                mosaic.cols
+            )
+
+        );
+
+
+    mosaic.tileH =
+
+        Math.max(
+
+            1,
+
+            Math.floor(
+                displayH /
+                mosaic.rows
+            )
+
+        );
+
+
+    mosaic.w =
+
+        mosaic.tileW *
+        mosaic.cols;
+
+
+    mosaic.h =
+
+        mosaic.tileH *
+        mosaic.rows;
+
+
+    mosaic.xOff =
+
+        Math.round(
+
+            (
+                WIDTH -
+                mosaic.w
+            ) / 2
+
+        );
+
+
+    mosaic.yOff =
+
+        Math.round(
+
+            (
+                HEIGHT -
+                mosaic.h
+            ) / 2
+
+        );
+
+
+    // ======================================================
+    // IMAGEN PROCESADA
+    // ======================================================
+
+    mosaic.processedCanvas =
+
+        document.createElement(
+            "canvas"
+        );
+
+
+    mosaic.processedCanvas.width =
+        mosaic.w;
+
+
+    mosaic.processedCanvas.height =
+        mosaic.h;
+
+
+    const pctx =
+
+        mosaic.processedCanvas
+        .getContext(
+            "2d",
+            {
+                willReadFrequently: true
+            }
+        );
+
+
+    pctx.drawImage(
+
+        photo,
+
+        0,
+
+        0,
+
+        mosaic.w,
+
+        mosaic.h
+
+    );
+
+
+    // ======================================================
+    // MÁS BRILLO Y CONTRASTE
+    // equivalente aproximado de:
+    // convertScaleAbs(alpha=1.15, beta=30)
+    // ======================================================
+
+    const imageData =
+
+        pctx.getImageData(
+
+            0,
+
+            0,
+
+            mosaic.w,
+
+            mosaic.h
+
+        );
+
+
+    const pixels =
+        imageData.data;
+
+
+    for (
+        let i = 0;
+        i < pixels.length;
+        i += 4
+    ) {
+
+        pixels[i] =
+
+            Math.min(
+
+                255,
+
+                pixels[i] *
+                1.15 +
+                30
+
+            );
+
+
+        pixels[i + 1] =
+
+            Math.min(
+
+                255,
+
+                pixels[i + 1] *
+                1.15 +
+                30
+
+            );
+
+
+        pixels[i + 2] =
+
+            Math.min(
+
+                255,
+
+                pixels[i + 2] *
+                1.15 +
+                30
+
+            );
+
+    }
+
+
+    pctx.putImageData(
+
+        imageData,
+
+        0,
+
+        0
+
+    );
+
+
+    // ======================================================
+    // CANVAS DEL MOSAICO
+    // ======================================================
+
+    mosaic.mosaicCanvas =
+
+        document.createElement(
+            "canvas"
+        );
+
+
+    mosaic.mosaicCanvas.width =
+        mosaic.w;
+
+
+    mosaic.mosaicCanvas.height =
+        mosaic.h;
+
+
+    const mctx =
+
+        mosaic.mosaicCanvas
+        .getContext("2d");
+
+
+    mctx.imageSmoothingEnabled =
+        true;
+
+
+    const sourceData =
+
+        pctx.getImageData(
+
+            0,
+
+            0,
+
+            mosaic.w,
+
+            mosaic.h
+
+        ).data;
+
+
+    mosaic.tiles = [];
+
+
+    const maxDelay =
+        15;
+
+
+    const maxDistance =
+
+        Math.max(
+
+            mosaic.w,
+
+            mosaic.h
+
+        );
+
+
+    // ======================================================
+    // GENERAR LAS 70 x 70 PIEZAS
+    // ======================================================
+
+    for (
+        let r = 0;
+        r < mosaic.rows;
+        r++
+    ) {
+
+        for (
+            let c = 0;
+            c < mosaic.cols;
+            c++
+        ) {
+
+            const x =
+
+                c *
+                mosaic.tileW;
+
+
+            const y =
+
+                r *
+                mosaic.tileH;
+
+
+            let red = 0;
+
+            let green = 0;
+
+            let blue = 0;
+
+            let count = 0;
+
+
+            for (
+                let yy = y;
+                yy < y + mosaic.tileH;
+                yy++
+            ) {
+
+                let index =
+
+                    (
+                        yy *
+                        mosaic.w +
+                        x
+                    ) * 4;
+
+
+                for (
+                    let xx = 0;
+                    xx < mosaic.tileW;
+                    xx++
+                ) {
+
+                    red +=
+                        sourceData[index];
+
+
+                    green +=
+                        sourceData[
+                            index + 1
+                        ];
+
+
+                    blue +=
+                        sourceData[
+                            index + 2
+                        ];
+
+
+                    count++;
+
+
+                    index +=
+                        4;
+
+                }
+
+            }
+
+
+            const avgR =
+
+                Math.round(
+                    red / count
+                );
+
+
+            const avgG =
+
+                Math.round(
+                    green / count
+                );
+
+
+            const avgB =
+
+                Math.round(
+                    blue / count
+                );
+
+
+            // Cada pieza contiene una miniatura
+            // de toda la imagen.
+
+            mctx.drawImage(
+
+                mosaic.processedCanvas,
+
+                0,
+
+                0,
+
+                mosaic.w,
+
+                mosaic.h,
+
+                x,
+
+                y,
+
+                mosaic.tileW,
+
+                mosaic.tileH
+
+            );
+
+
+            // Tinte según la zona correspondiente.
+
+            mctx.fillStyle =
+
+                `rgba(
+                    ${avgR},
+                    ${avgG},
+                    ${avgB},
+                    0.70
+                )`;
+
+
+            mctx.fillRect(
+
+                x,
+
+                y,
+
+                mosaic.tileW,
+
+                mosaic.tileH
+
+            );
+
+
+            // Posición inicial aleatoria alrededor.
+
+            const angle =
+
+                random(
+                    0,
+                    Math.PI * 2
+                );
+
+
+            const distance =
+
+                random(
+
+                    maxDistance * 0.6,
+
+                    maxDistance * 1.1
+
+                );
+
+
+            const startX =
+
+                mosaic.w / 2 +
+
+                Math.cos(angle) *
+                distance;
+
+
+            const startY =
+
+                mosaic.h / 2 +
+
+                Math.sin(angle) *
+                distance;
+
+
+            mosaic.tiles.push({
+
+                x: x,
+
+                y: y,
+
+                startX: startX,
+
+                startY: startY,
+
+                delay:
+                    Math.floor(
+
+                        random(
+                            0,
+                            maxDelay + 1
+                        )
+
+                    )
+
+            });
+
+        }
+
+    }
+
+
+    // ======================================================
+    // COLOR DEL CUADRADO CENTRAL
+    // ======================================================
+
+    const centerC =
+
+        Math.floor(
+            mosaic.cols / 2
+        );
+
+
+    const centerR =
+
+        Math.floor(
+            mosaic.rows / 2
+        );
+
+
+    const centerPX =
+
+        Math.min(
+
+            mosaic.w - 1,
+
+            centerC *
+            mosaic.tileW +
+            Math.floor(
+                mosaic.tileW / 2
+            )
+
+        );
+
+
+    const centerPY =
+
+        Math.min(
+
+            mosaic.h - 1,
+
+            centerR *
+            mosaic.tileH +
+            Math.floor(
+                mosaic.tileH / 2
+            )
+
+        );
+
+
+    const centerIndex =
+
+        (
+            centerPY *
+            mosaic.w +
+            centerPX
+        ) * 4;
+
+
+    mosaic.centerColor = [
+
+        sourceData[
+            centerIndex
+        ],
+
+        sourceData[
+            centerIndex + 1
+        ],
+
+        sourceData[
+            centerIndex + 2
+        ]
+
+    ];
+
+
+    mosaic.ready =
+        true;
+
+
+    mosaic.phase =
+        "SWARM_IN";
+
+
+    mosaic.phaseStart =
+        time;
+
+}
+
+
+// ==========================================================
+// FUNCIONES DE EASING
+// ==========================================================
+
+function easeOutQuart(t) {
+
+    return (
+
+        1 -
+
+        Math.pow(
+            1 - t,
+            4
+        )
+
+    );
+
+}
+
+
+function easeInCubic(t) {
+
+    return (
+        t * t * t
+    );
+
+}
+
+
+function cosineEase(t) {
+
+    return (
+
+        1 -
+
+        Math.cos(
+            t * Math.PI
+        )
+
+    ) / 2;
+
+}
+
+
+// ==========================================================
+// FONDO NEGRO
+// ==========================================================
+
+function drawBlack() {
+
+    ctx.fillStyle =
+        "#000000";
+
+
+    ctx.fillRect(
+
+        0,
+
+        0,
+
+        WIDTH,
+
+        HEIGHT
+
+    );
+
+}
+
+
+// ==========================================================
+// MOSAICO ESTÁTICO
+// ==========================================================
+
+function drawMosaicStill() {
+
+    ctx.drawImage(
+
+        mosaic.mosaicCanvas,
+
+        mosaic.xOff,
+
+        mosaic.yOff
+
+    );
+
+}
+
+
+// ==========================================================
+// PIEZAS ENTRANDO / SALIENDO
+// ==========================================================
+
+function drawSwarm(
+
+    progress,
+
+    reverse = false
+
+) {
+
+    const frameProgress =
+
+        Math.max(
+
+            0,
+
+            Math.min(
+                1,
+                progress
+            )
+
+        );
+
+
+    const virtualFrame =
+
+        frameProgress *
+        75;
+
+
+    const maxDelay =
+        15;
+
+
+    for (
+        const tile
+        of mosaic.tiles
+    ) {
+
+        let local;
+
+
+        if (
+            !reverse
+        ) {
+
+            if (
+                virtualFrame <
+                tile.delay
+            ) {
+
+                continue;
+
+            }
+
+
+            local =
+
+                (
+                    virtualFrame -
+                    tile.delay
+                )
+
+                /
+
+                (
+                    75 -
+                    tile.delay
+                );
+
+
+            local =
+
+                Math.max(
+
+                    0,
+
+                    Math.min(
+                        1,
+                        local
+                    )
+
+                );
+
+
+            local =
+                easeOutQuart(
+                    local
+                );
+
+        }
+
+        else {
+
+            const reverseDelay =
+
+                maxDelay -
+                tile.delay;
+
+
+            if (
+                virtualFrame <
+                reverseDelay
+            ) {
+
+                local =
+                    0;
+
+            }
+
+            else {
+
+                local =
+
+                    (
+                        virtualFrame -
+                        reverseDelay
+                    )
+
+                    /
+
+                    (
+                        75 -
+                        reverseDelay
+                    );
+
+
+                local =
+
+                    Math.max(
+
+                        0,
+
+                        Math.min(
+                            1,
+                            local
+                        )
+
+                    );
+
+
+                local =
+                    easeInCubic(
+                        local
+                    );
+
+            }
+
+        }
+
+
+        let currentX;
+
+        let currentY;
+
+
+        if (
+            reverse
+        ) {
+
+            currentX =
+
+                tile.x +
+
+                (
+                    tile.startX -
+                    tile.x
+                ) * local;
+
+
+            currentY =
+
+                tile.y +
+
+                (
+                    tile.startY -
+                    tile.y
+                ) * local;
+
+        }
+
+        else {
+
+            currentX =
+
+                tile.startX +
+
+                (
+                    tile.x -
+                    tile.startX
+                ) * local;
+
+
+            currentY =
+
+                tile.startY +
+
+                (
+                    tile.y -
+                    tile.startY
+                ) * local;
+
+        }
+
+
+        ctx.drawImage(
+
+            mosaic.mosaicCanvas,
+
+            tile.x,
+
+            tile.y,
+
+            mosaic.tileW,
+
+            mosaic.tileH,
+
+            mosaic.xOff +
+            currentX,
+
+            mosaic.yOff +
+            currentY,
+
+            mosaic.tileW,
+
+            mosaic.tileH
+
+        );
+
+    }
+
+}
+
+
+// ==========================================================
+// ZOOM AL CUADRADO CENTRAL
+// ==========================================================
+
+function drawZoom(t) {
+
+    const ease =
+
+        cosineEase(
+
+            Math.max(
+
+                0,
+
+                Math.min(
+                    1,
+                    t
+                )
+
+            )
+
+        );
+
+
+    const targetC =
+
+        Math.floor(
+            mosaic.cols / 2
+        );
+
+
+    const targetR =
+
+        Math.floor(
+            mosaic.rows / 2
+        );
+
+
+    const targetX1 =
+
+        targetC *
+        mosaic.tileW;
+
+
+    const targetY1 =
+
+        targetR *
+        mosaic.tileH;
+
+
+    const targetX2 =
+
+        targetX1 +
+        mosaic.tileW;
+
+
+    const targetY2 =
+
+        targetY1 +
+        mosaic.tileH;
+
+
+    const targetCenterX =
+
+        targetX1 +
+        mosaic.tileW / 2;
+
+
+    const targetCenterY =
+
+        targetY1 +
+        mosaic.tileH / 2;
+
+
+    // ======================================================
+    // VENTANA DE VISIÓN
+    // ======================================================
+
+    const viewW =
+
+        mosaic.w +
+
+        (
+            mosaic.tileW -
+            mosaic.w
+        ) * ease;
+
+
+    const viewH =
+
+        mosaic.h +
+
+        (
+            mosaic.tileH -
+            mosaic.h
+        ) * ease;
+
+
+    const viewCenterX =
+
+        mosaic.w / 2 +
+
+        (
+            targetCenterX -
+            mosaic.w / 2
+        ) * ease;
+
+
+    const viewCenterY =
+
+        mosaic.h / 2 +
+
+        (
+            targetCenterY -
+            mosaic.h / 2
+        ) * ease;
+
+
+    const sourceX =
+
+        viewCenterX -
+        viewW / 2;
+
+
+    const sourceY =
+
+        viewCenterY -
+        viewH / 2;
+
+
+    // ======================================================
+    // DIBUJAR MOSAICO AMPLIADO
+    // ======================================================
+
+    ctx.drawImage(
+
+        mosaic.mosaicCanvas,
+
+        sourceX,
+
+        sourceY,
+
+        viewW,
+
+        viewH,
+
+        mosaic.xOff,
+
+        mosaic.yOff,
+
+        mosaic.w,
+
+        mosaic.h
+
+    );
+
+
+    // ======================================================
+    // COORDENADAS DEL CUADRADO CENTRAL EN PANTALLA
+    // ======================================================
+
+    const scaleX =
+
+        mosaic.w /
+        viewW;
+
+
+    const scaleY =
+
+        mosaic.h /
+        viewH;
+
+
+    const screenX1 =
+
+        mosaic.xOff +
+
+        (
+            targetX1 -
+            sourceX
+        ) * scaleX;
+
+
+    const screenY1 =
+
+        mosaic.yOff +
+
+        (
+            targetY1 -
+            sourceY
+        ) * scaleY;
+
+
+    const screenX2 =
+
+        mosaic.xOff +
+
+        (
+            targetX2 -
+            sourceX
+        ) * scaleX;
+
+
+    const screenY2 =
+
+        mosaic.yOff +
+
+        (
+            targetY2 -
+            sourceY
+        ) * scaleY;
+
+
+    const screenW =
+
+        screenX2 -
+        screenX1;
+
+
+    const screenH =
+
+        screenY2 -
+        screenY1;
+
+
+    // ======================================================
+    // REEMPLAZAR EL CUADRADO CENTRAL POR LA FOTO
+    // EN ALTA RESOLUCIÓN
+    // ======================================================
+
+    if (
+        screenW > 0 &&
+        screenH > 0
+    ) {
+
+        ctx.save();
+
+
+        ctx.beginPath();
+
+
+        ctx.rect(
+
+            mosaic.xOff,
+
+            mosaic.yOff,
+
+            mosaic.w,
+
+            mosaic.h
+
+        );
+
+
+        ctx.clip();
+
+
+        ctx.drawImage(
+
+            mosaic.processedCanvas,
+
+            screenX1,
+
+            screenY1,
+
+            screenW,
+
+            screenH
+
+        );
+
+
+        // El tinte desaparece a medida que acercamos.
+
+        const tintAlpha =
+
+            0.70 *
+
+            (
+                1 -
+                ease
+            );
+
+
+        if (
+            tintAlpha >
+            0.001
+        ) {
+
+            const color =
+                mosaic.centerColor;
+
+
+            ctx.fillStyle =
+
+                `rgba(
+                    ${color[0]},
+                    ${color[1]},
+                    ${color[2]},
+                    ${tintAlpha}
+                )`;
+
+
+            ctx.fillRect(
+
+                screenX1,
+
+                screenY1,
+
+                screenW,
+
+                screenH
+
+            );
+
+        }
+
+
+        ctx.restore();
+
+    }
+
+}
+
+
+// ==========================================================
+// CAMBIAR FASE DEL FOTOMOSAICO
+// ==========================================================
+
+function advanceMosaicPhase(
+
+    time,
+
+    nextPhase
+
+) {
+
+    mosaic.phase =
+        nextPhase;
+
+
+    mosaic.phaseStart =
+        time;
+
+
+    // Cada vez que vuelve a empezar,
+    // genera nuevas posiciones aleatorias.
+
+    if (
+        nextPhase ===
+        "SWARM_IN"
+    ) {
+
+        const maxDistance =
+
+            Math.max(
+
+                mosaic.w,
+
+                mosaic.h
+
+            );
+
+
+        for (
+            const tile
+            of mosaic.tiles
+        ) {
+
+            const angle =
+
+                random(
+                    0,
+                    Math.PI * 2
+                );
+
+
+            const distance =
+
+                random(
+
+                    maxDistance * 0.6,
+
+                    maxDistance * 1.1
+
+                );
+
+
+            tile.startX =
+
+                mosaic.w / 2 +
+
+                Math.cos(angle) *
+                distance;
+
+
+            tile.startY =
+
+                mosaic.h / 2 +
+
+                Math.sin(angle) *
+                distance;
+
+
+            tile.delay =
+
+                Math.floor(
+
+                    random(
+                        0,
+                        16
+                    )
+
+                );
+
+        }
+
+    }
+
+}
+
+
+// ==========================================================
+// ANIMACIÓN DEL FOTOMOSAICO
+// ==========================================================
+
+function mosaicAnimation(time) {
+
+    drawBlack();
+
+
+    if (
+        !mosaic.ready
+    ) {
+
+        return;
+
+    }
+
+
+    const elapsed =
+
+        time -
+        mosaic.phaseStart;
+
+
+    const duration =
+
+        mosaic.durations[
+            mosaic.phase
+        ];
+
+
+    const progress =
+
+        Math.max(
+
+            0,
+
+            Math.min(
+
+                1,
+
+                elapsed /
+                duration
+
+            )
+
+        );
+
+
+    switch (
+        mosaic.phase
+    ) {
+
+        // ==================================================
+        // LAS PIEZAS ENTRAN
+        // ==================================================
+
+        case "SWARM_IN":
+
+            drawSwarm(
+
+                progress,
+
+                false
+
+            );
+
+
+            if (
+                progress >= 1
+            ) {
+
+                advanceMosaicPhase(
+
+                    time,
+
+                    "HOLD_MOSAIC_1"
+
+                );
+
+            }
+
+            break;
+
+
+        // ==================================================
+        // MOSAICO COMPLETO
+        // ==================================================
+
+        case "HOLD_MOSAIC_1":
+
+            drawMosaicStill();
+
+
+            if (
+                progress >= 1
+            ) {
+
+                advanceMosaicPhase(
+
+                    time,
+
+                    "ZOOM_IN"
+
+                );
+
+            }
+
+            break;
+
+
+        // ==================================================
+        // ZOOM HACIA EL CENTRO
+        // ==================================================
+
+        case "ZOOM_IN":
+
+            drawZoom(
+                progress
+            );
+
+
+            if (
+                progress >= 1
+            ) {
+
+                advanceMosaicPhase(
+
+                    time,
+
+                    "HOLD_IMAGE"
+
+                );
+
+            }
+
+            break;
+
+
+        // ==================================================
+        // MOSTRAR FOTO
+        // ==================================================
+
+        case "HOLD_IMAGE":
+
+            ctx.drawImage(
+
+                mosaic.processedCanvas,
+
+                mosaic.xOff,
+
+                mosaic.yOff
+
+            );
+
+
+            if (
+                progress >= 1
+            ) {
+
+                advanceMosaicPhase(
+
+                    time,
+
+                    "ZOOM_OUT"
+
+                );
+
+            }
+
+            break;
+
+
+        // ==================================================
+        // ALEJARSE OTRA VEZ
+        // ==================================================
+
+        case "ZOOM_OUT":
+
+            drawZoom(
+
+                1 -
+                progress
+
+            );
+
+
+            if (
+                progress >= 1
+            ) {
+
+                advanceMosaicPhase(
+
+                    time,
+
+                    "HOLD_MOSAIC_2"
+
+                );
+
+            }
+
+            break;
+
+
+        // ==================================================
+        // MOSTRAR MOSAICO
+        // ==================================================
+
+        case "HOLD_MOSAIC_2":
+
+            drawMosaicStill();
+
+
+            if (
+                progress >= 1
+            ) {
+
+                advanceMosaicPhase(
+
+                    time,
+
+                    "SWARM_OUT"
+
+                );
+
+            }
+
+            break;
+
+
+        // ==================================================
+        // LAS PIEZAS SE DISPERSAN
+        // ==================================================
+
+        case "SWARM_OUT":
+
+            drawSwarm(
+
+                progress,
+
+                true
+
+            );
+
+
+            if (
+                progress >= 1
+            ) {
+
+                advanceMosaicPhase(
+
+                    time,
+
+                    "SWARM_IN"
+
+                );
+
+            }
+
+            break;
+
+    }
+
+}
+
+
+// ==========================================================
+// MENSAJE SI FALTA IMAGE.PNG
+// ==========================================================
+
+function drawImageError() {
+
+    drawBlack();
+
+
+    ctx.textAlign =
+        "center";
+
+
+    ctx.fillStyle =
+        "white";
+
+
+    ctx.font =
+        "20px Arial";
+
+
+    ctx.fillText(
+
+        "No se pudo cargar image.png",
+
+        centerX,
+
+        centerY - 15
+
+    );
+
+
+    ctx.fillStyle =
+        "#bbbbbb";
+
+
+    ctx.font =
+        "15px Arial";
+
+
+    ctx.fillText(
+
+        "Colocá image.png en la misma carpeta que index.html",
+
+        centerX,
+
+        centerY + 18
+
+    );
 
 }
 
@@ -1173,7 +3121,55 @@ function tunnelAnimation(time) {
 
 function animate(time) {
 
-    drawBackground();
+    // ======================================================
+    // FOTOMOSAICO
+    // ======================================================
+
+    if (
+        mode === "MOSAIC"
+    ) {
+
+        mosaicAnimation(
+            time
+        );
+
+
+        requestAnimationFrame(
+            animate
+        );
+
+
+        return;
+
+    }
+
+
+    // ======================================================
+    // ERROR DE IMAGEN
+    // ======================================================
+
+    if (
+        mode === "IMAGE_ERROR"
+    ) {
+
+        drawImageError();
+
+
+        requestAnimationFrame(
+            animate
+        );
+
+
+        return;
+
+    }
+
+
+    // ======================================================
+    // CORAZONES
+    // ======================================================
+
+    drawHeartBackground();
 
 
     if (
@@ -1186,7 +3182,10 @@ function animate(time) {
 
     }
 
-    else {
+
+    else if (
+        mode === "TUNNEL"
+    ) {
 
         tunnelAnimation(
             time
@@ -1196,6 +3195,37 @@ function animate(time) {
 
 
     updateParticles();
+
+
+    // ======================================================
+    // SI PASARON LOS 5 SEGUNDOS PERO FALTA LA IMAGEN
+    // ======================================================
+
+    if (
+
+        photoFailed
+
+        &&
+
+        mode === "TUNNEL"
+
+        &&
+
+        tunnelStartTime !== null
+
+        &&
+
+        time -
+        tunnelStartTime
+        >=
+        TUNNEL_BEFORE_MOSAIC_MS
+
+    ) {
+
+        mode =
+            "IMAGE_ERROR";
+
+    }
 
 
     requestAnimationFrame(
@@ -1216,4 +3246,5 @@ requestAnimationFrame(
 </script>
 
 </body>
+
 </html>
