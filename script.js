@@ -123,7 +123,7 @@
     gateState.aliasSolved = new Set();
     gateState.selectedAlias = null;
     setGateProgress(1, 0);
-    gateMessage("Un emparejamiento mal y reinicio todo. Los podcasts tenían examen sorpresa.");
+    gateMessage("Un emparejamiento mal y reinicio todo. A ver cuánto te acordás.");
 
     const aliases = shuffle(C.unlockGame.aliases.map((x, i) => ({ ...x, id: i })));
     const identities = shuffle(C.unlockGame.aliases.map((x, i) => ({ ...x, id: i })));
@@ -197,7 +197,7 @@
       gateState.selectedAlias = null;
       const done = gateState.aliasSolved.size;
       setGateProgress(1, done / C.unlockGame.aliases.length);
-      gateMessage(done === C.unlockGame.aliases.length ? "Todas las identidades confirmadas. Bastante preocupante cuánto sabés.": `${done}/${C.unlockGame.aliases.length}. Correcto. Seguí.`, "good");
+      gateMessage(done === C.unlockGame.aliases.length ? "Listo. Primera prueba superada.": `${done}/${C.unlockGame.aliases.length}. Bien. Seguí.`, "good");
       if (done === C.unlockGame.aliases.length) setTimeout(renderTriviaStage, 850);
       return;
     }
@@ -224,7 +224,7 @@
   function renderTriviaQuestion() {
     const q = gateState.triviaQueue[0];
     if (!q) {
-      gateMessage("Interrogatorio aprobado. Queda la parte verdaderamente cruel.", "good");
+      gateMessage("Perfecto. Te queda una sola prueba.", "good");
       setGateProgress(2, 1);
       setTimeout(renderChronologyStage, 900);
       return;
@@ -244,7 +244,7 @@
       <div class="trivia-options" id="triviaOptions"></div>
     `;
 
-    gateMessage(gateState.triviaMistakes ? `Errores acumulados: ${gateState.triviaMistakes}. Los voy archivando por razones personales.` : "No hay gore, no hay body counts. Solo información inútil adquirida con muchísimas horas de podcast.");
+    gateMessage(gateState.triviaMistakes ? `Errores: ${gateState.triviaMistakes}. Esa te vuelve a aparecer después.` : "Sin Google. Confío en vos.");
     const options = shuffle([...q.options]);
     const wrap = $("#triviaOptions", gateStage);
     options.forEach(option => {
@@ -281,7 +281,7 @@
     gateState.stage = 3;
     gateState.chronologyIndex = 0;
     setGateProgress(3, 0);
-    gateMessage("Ordená por año de arresto/captura, del más antiguo al más reciente. Un error reinicia esta etapa.");
+    gateMessage("Ordenalos del más antiguo al más reciente. Si fallás, esta parte empieza de nuevo.");
 
     const shuffled = shuffle([...C.unlockGame.chronology]);
     gateStage.innerHTML = `
@@ -303,7 +303,7 @@
       btn.type = "button";
       btn.className = "saga-card chronology-card";
       btn.dataset.label = item.label;
-      btn.innerHTML = `<span class="case-file-icon">▤</span><strong>${escapeHTML(item.label)}</strong><small class="chronology-year">AÑO BLOQUEADO</small>`;
+      btn.innerHTML = `<span class="case-file-icon" aria-hidden="true">${escapeHTML(item.symbol || "🔎")}</span><strong>${escapeHTML(item.label)}</strong><small class="chronology-year">AÑO BLOQUEADO</small>`;
       btn.addEventListener("click", () => handleChronologyPick(btn, item));
       grid.appendChild(btn);
     });
@@ -326,7 +326,7 @@
       if (year) year.textContent = expected.year;
       gateState.chronologyIndex++;
       updateChronologyPicked();
-      gateMessage(gateState.chronologyIndex < C.unlockGame.chronology.length ? `${expected.year}. Bien. Siguiente.` : "Línea temporal cerrada. Las horas de podcast quedan oficialmente justificadas.", "good");
+      gateMessage(gateState.chronologyIndex < C.unlockGame.chronology.length ? `${expected.year}. Bien. Siguiente.` : "Sí, eras vos. Sabía que ibas a poder.", "good");
       if (gateState.chronologyIndex === C.unlockGame.chronology.length) {
         $$(".chronology-card", gateStage).forEach(card => card.disabled = true);
         setTimeout(finishGate, 900);
@@ -485,7 +485,7 @@
       btn.classList.add("visited");
       openDialog(item);
       if (state.visitedHearts.size === C.constellation.length) {
-        setTimeout(() => toast("¡Abriste toda la constelación! 🩶✨", 3500), 400);
+        setTimeout(() => toast("Abriste todos los corazones ❤️✨", 3500), 400);
         burstHearts(24);
       }
     });
@@ -531,11 +531,17 @@
   // -----------------------------
   const candlesEl = $("#candles");
   const candleEls = [];
+  const candleTopRow = document.createElement("div");
+  const candleBottomRow = document.createElement("div");
+  candleTopRow.className = "candle-row candle-row-top";
+  candleBottomRow.className = "candle-row candle-row-bottom";
+  candlesEl.append(candleTopRow, candleBottomRow);
+
   for (let i = 0; i < C.age; i++) {
     const candle = document.createElement("div");
     candle.className = "candle";
     candle.innerHTML = `<span class="flame"></span>`;
-    candlesEl.appendChild(candle);
+    (i < 8 ? candleTopRow : candleBottomRow).appendChild(candle);
     candleEls.push(candle);
   }
 

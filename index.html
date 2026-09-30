@@ -7,6 +7,7 @@
   <meta name="description" content="Un regalo de cumpleaños hecho por Valen para Anto." />
   <title>Feliz cumple, Anto ✦ de Valen</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="polish.css" />
 </head>
 <body>
   <canvas id="ambientCanvas" aria-hidden="true"></canvas>
@@ -14,19 +15,26 @@
 
   <div id="opening" class="opening" role="dialog" aria-modal="true" aria-labelledby="openingTitle">
     <div class="opening-card glass">
-      <div class="gate-fingerprint" aria-hidden="true"><span></span></div>
+      <div class="classified-seal" aria-hidden="true">
+        <span class="seal-dot">• • •</span>
+        <div class="seal-core">
+          <strong>CONFIDENCIAL</strong>
+          <small>ARCHIVO 17 · SOLO ANTO</small>
+        </div>
+        <span class="seal-dot bottom">• • •</span>
+      </div>
 
       <div id="gateIntro" class="gate-view">
         <div class="tiny-kicker">ACCESO BLOQUEADO · ARCHIVO 17</div>
-        <h1 id="openingTitle">Para Anto <span>🩶</span></h1>
+        <h1 id="openingTitle">Para Anto <span class="title-heart">♥</span></h1>
         <p id="countdownLabel" class="countdown-label">Calculando cuánto falta para tus 17…</p>
         <div id="countdown" class="countdown" aria-live="polite"></div>
         <div class="gate-warning">
           <strong>Hay una condición.</strong>
-          <span>No podés abrir nada hasta pasar una pequeña prueba. Si esto no lo puede hacer Anto, honestamente nadie.</span>
+          <span>No podés abrir nada hasta pasar una pequeña prueba. Si esto no lo podés hacer vos, honestamente nadie.</span>
         </div>
         <button id="startGateBtn" class="primary-btn">Abrir el expediente 🔎</button>
-        <p class="micro-note">Pista general: todas esas horas escuchando podcasts de asesinos seriales finalmente tienen una utilidad académicamente dudosa.</p>
+        <p class="micro-note">Sin Google.</p>
       </div>
 
       <div id="gateGame" class="gate-view gate-game" hidden>
@@ -43,7 +51,7 @@
         <div class="gate-unlocked-ring" aria-hidden="true"><span>✓</span></div>
         <div class="tiny-kicker">IDENTIDAD CONFIRMADA</div>
         <h2>Bueno, sí.<br>Definitivamente sos Anto.</h2>
-        <p>Superaste el Archivo Criminal. Queda oficialmente comprobado que tus horas de podcast no fueron en vano y la grandiosa tirana está autorizada a entrar.</p>
+        <p>Bueno, sí. Sos vos. Ahora sí podés abrir el resto de tu regalo.</p>
         <button id="openGiftBtn" class="primary-btn">Desbloquear todo ✨</button>
         <p class="micro-note">Ahora sí empieza el regalo de verdad.</p>
       </div>
@@ -65,7 +73,7 @@
 
     <div class="hero-grid">
       <div class="hero-copy reveal">
-        <div class="tiny-kicker">PARA UNA GRANDIOSA TIRANA</div>
+        <div class="tiny-kicker">PARA UNA DE MIS PERSONAS FAVORITAS</div>
         <h2>Feliz cumple,<br><em>Anto.</em></h2>
         <p id="heroLine" class="hero-line"></p>
         <div class="hero-actions">
@@ -217,7 +225,7 @@
       <div class="final-card reveal">
         <div class="tiny-kicker">FIN DEL RECORRIDO, NO DEL CONTRATO</div>
         <h3>Feliz capítulo 17, Anto.</h3>
-        <p>Te quiero muchísimo. — Valen 🩶</p>
+        <p>Te quiero muchísimo. — Valen ❤️</p>
         <button id="replayBtn" class="primary-btn" type="button">Lluvia de corazones otra vez</button>
       </div>
     </section>
@@ -242,6 +250,7 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script src="config.js"></script>
+  <script src="overrides.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
