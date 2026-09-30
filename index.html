@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#130b1f" />
+  <meta name="description" content="Un regalo de cumpleaños hecho por Valen para Anto." />
+  <title>Feliz cumple, Anto ✦ de Valen</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="ambientCanvas" aria-hidden="true"></canvas>
+  <canvas id="fireworksCanvas" aria-hidden="true"></canvas>
+
+  <div id="opening" class="opening" role="dialog" aria-modal="true" aria-labelledby="openingTitle">
+    <div class="opening-card glass">
+      <div class="gate-fingerprint" aria-hidden="true"><span></span></div>
+
+      <div id="gateIntro" class="gate-view">
+        <div class="tiny-kicker">ACCESO BLOQUEADO · ARCHIVO 17</div>
+        <h1 id="openingTitle">Para Anto <span>🩶</span></h1>
+        <p id="countdownLabel" class="countdown-label">Calculando cuánto falta para tus 17…</p>
+        <div id="countdown" class="countdown" aria-live="polite"></div>
+        <div class="gate-warning">
+          <strong>Hay una condición.</strong>
+          <span>No podés abrir nada hasta pasar una pequeña prueba. Si esto no lo puede hacer Anto, honestamente nadie.</span>
+        </div>
+        <button id="startGateBtn" class="primary-btn">Abrir el expediente 🔎</button>
+        <p class="micro-note">Pista general: todas esas horas escuchando podcasts de asesinos seriales finalmente tienen una utilidad académicamente dudosa.</p>
+      </div>
+
+      <div id="gateGame" class="gate-view gate-game" hidden>
+        <div class="gate-topline">
+          <div>ARCHIVO CRIMINAL · CASO 17</div>
+          <div id="gateProgressText">PRUEBA 1 / 3</div>
+        </div>
+        <div class="gate-progress" aria-hidden="true"><span id="gateProgressBar"></span></div>
+        <div id="gateStage" class="gate-stage" aria-live="polite"></div>
+        <div id="gateStatus" class="gate-status" aria-live="polite"></div>
+      </div>
+
+      <div id="gateSuccess" class="gate-view gate-success" hidden>
+        <div class="gate-unlocked-ring" aria-hidden="true"><span>✓</span></div>
+        <div class="tiny-kicker">IDENTIDAD CONFIRMADA</div>
+        <h2>Bueno, sí.<br>Definitivamente sos Anto.</h2>
+        <p>Superaste el Archivo Criminal. Queda oficialmente comprobado que tus horas de podcast no fueron en vano y la grandiosa tirana está autorizada a entrar.</p>
+        <button id="openGiftBtn" class="primary-btn">Desbloquear todo ✨</button>
+        <p class="micro-note">Ahora sí empieza el regalo de verdad.</p>
+      </div>
+    </div>
+  </div>
+
+  <audio id="bgMusic" loop preload="auto"></audio>
+  <button id="musicBtn" class="floating-btn music-btn" aria-label="Pausar o reproducir música" title="Música">♫</button>
+  <button id="topBtn" class="floating-btn top-btn" aria-label="Volver arriba" title="Volver arriba">↑</button>
+
+  <header class="hero section" id="inicio">
+    <nav class="mini-nav glass" aria-label="Navegación principal">
+      <a href="#carta">Carta</a>
+      <a href="#mensajes">Amigos</a>
+      <a href="#constelacion">Constelación</a>
+      <a href="#torta">Velitas</a>
+      <a href="#recibo">Recibo</a>
+    </nav>
+
+    <div class="hero-grid">
+      <div class="hero-copy reveal">
+        <div class="tiny-kicker">PARA UNA GRANDIOSA TIRANA</div>
+        <h2>Feliz cumple,<br><em>Anto.</em></h2>
+        <p id="heroLine" class="hero-line"></p>
+        <div class="hero-actions">
+          <a class="primary-btn" href="#carta">Empezar el recorrido</a>
+          <button id="chaosBtn" class="ghost-btn" type="button">Botón sospechoso</button>
+        </div>
+      </div>
+
+      <div class="photo-stack reveal" aria-label="Fotos de Anto y amigas">
+        <figure class="polaroid p1"><img src="assets/photos/anto-portrait-1.jpeg" alt="Foto de Anto"><figcaption>anto_01.jpg</figcaption></figure>
+        <figure class="polaroid p2"><img src="assets/photos/amigas-espejo.jpeg" alt="Foto de amigas frente a un espejo"><figcaption>gente_linda.jpg</figcaption></figure>
+        <figure class="polaroid p3"><img src="assets/photos/anto-portrait-2.jpeg" alt="Foto de Anto sonriendo"><figcaption>tirana.exe</figcaption></figure>
+        <figure class="polaroid p4"><img src="assets/photos/amigas-casa.jpeg" alt="Foto de amigas juntas"><figcaption>archivo_feliz.jpg</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="scroll-cue">deslizá ↓</div>
+  </header>
+
+  <main>
+    <section class="section paper-section" id="carta">
+      <div class="section-heading reveal">
+        <span>01</span>
+        <div>
+          <div class="tiny-kicker">UNA COSA CASI SERIA</div>
+          <h3>Una carta para vos</h3>
+        </div>
+      </div>
+
+      <div class="envelope-wrap reveal">
+        <button id="envelope" class="envelope" type="button" aria-expanded="false" aria-label="Abrir carta de Valen para Anto">
+          <div class="envelope-shadow"></div>
+          <div class="envelope-back">
+            <div class="envelope-lining"></div>
+          </div>
+          <div class="letter-preview">
+            <span class="letter-preview-small">para</span>
+            <strong>Anto</strong>
+            <span>con muchísimo cariño,</span>
+            <em>Valen ♡</em>
+          </div>
+          <div class="mail-stamp"><span>17</span><small>ANTO</small></div>
+          <div class="postmark">01 OCT<br>2026</div>
+          <div class="envelope-front"></div>
+          <div class="envelope-flap"></div>
+          <div class="wax"><span>V</span></div>
+        </button>
+        <p class="tap-hint">tocá el sobre</p>
+      </div>
+
+      <article id="letter" class="letter-card" hidden></article>
+    </section>
+
+    <section class="section friends-section" id="mensajes">
+      <div class="section-heading reveal">
+        <span>02</span>
+        <div>
+          <div class="tiny-kicker">NO SOLO YO TENÍA COSAS PARA DECIR</div>
+          <h3>Mensajes de tu gente</h3>
+        </div>
+      </div>
+      <div id="friendGrid" class="friend-grid"></div>
+    </section>
+
+    <section class="section gallery-section" id="galeria">
+      <div class="section-heading reveal">
+        <span>03</span>
+        <div>
+          <div class="tiny-kicker">ARCHIVO VISUAL</div>
+          <h3>Fotos que quería guardar acá</h3>
+        </div>
+      </div>
+      <div id="gallery" class="gallery"></div>
+    </section>
+
+    <section class="section constellation-section" id="constelacion">
+      <div class="section-heading reveal light-heading">
+        <span>04</span>
+        <div>
+          <div class="tiny-kicker">UN PEDACITO DE NUESTRA HISTORIA</div>
+          <h3>Constelación de corazones</h3>
+          <p>Cada corazón guarda un deseo, un recuerdo o una foto. Tocá todos.</p>
+        </div>
+      </div>
+      <div class="constellation-shell reveal">
+        <canvas id="starsCanvas" aria-hidden="true"></canvas>
+        <div id="heartField" class="heart-field" aria-label="Constelación interactiva de corazones"></div>
+        <div class="constellation-center">
+          <strong>ANTO</strong>
+          <span>17 vueltas alrededor del sol</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section cake-section" id="torta">
+      <div class="section-heading reveal">
+        <span>05</span>
+        <div>
+          <div class="tiny-kicker">AHORA SÍ, CUMPLEAÑOS OFICIAL</div>
+          <h3>Pedí un deseo y soplá</h3>
+          <p>Activá el micrófono y soplá hacia él. Si el navegador se pone insoportable, hay un plan B.</p>
+        </div>
+      </div>
+
+      <div class="cake-stage reveal">
+        <div id="cake" class="cake" aria-label="Torta de cumpleaños con 17 velitas">
+          <div class="cake-glow" aria-hidden="true"></div>
+          <div id="candles" class="candles"></div>
+          <div class="cake-tier cake-top">
+            <div class="icing icing-top" aria-hidden="true"></div>
+            <span class="cake-plaque">ANTO • 17</span>
+          </div>
+          <div class="cake-tier cake-middle"><div class="icing" aria-hidden="true"></div></div>
+          <div class="cake-tier cake-bottom"><div class="icing" aria-hidden="true"></div></div>
+          <div class="cake-board" aria-hidden="true"></div>
+          <div class="plate" aria-hidden="true"></div>
+        </div>
+        <div class="cake-controls">
+          <button id="micBtn" class="primary-btn" type="button">Activar micro y soplar 🎤</button>
+          <button id="magicBlowBtn" class="ghost-btn" type="button">Plan B: apagar con magia ✨</button>
+          <div id="micStatus" class="mic-status" aria-live="polite">17 velitas encendidas.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section receipt-section" id="recibo">
+      <div class="section-heading reveal">
+        <span>06</span>
+        <div>
+          <div class="tiny-kicker">DOCUMENTACIÓN OFICIAL Y TOTALMENTE SERIA</div>
+          <h3>Recibo de nuestra amistad</h3>
+        </div>
+      </div>
+      <div class="receipt reveal">
+        <div class="receipt-logo">VALEN & ANTO S.A. (Sociedad de Amistad)</div>
+        <div class="receipt-meta"><span>FECHA: 01/10/2026</span><span>CAJA: CAOS-01</span></div>
+        <div class="receipt-rule"></div>
+        <div id="receiptItems" class="receipt-items"></div>
+        <div class="receipt-rule"></div>
+        <div class="receipt-total"><span>TOTAL</span><strong>IMPAGABLE</strong></div>
+        <div class="receipt-small">Método de pago: memes, favores, audios eternos, honestidad brutal y estar cuando importa.</div>
+        <div class="barcode" aria-hidden="true"></div>
+        <div class="receipt-footer">NO SE ACEPTAN DEVOLUCIONES DE AMISTAD · GARANTÍA DE POR VIDA*</div>
+        <div class="receipt-tiny">*Sujeta a pausas para dormir, estudiar y ejercer tiranía en horarios razonables.</div>
+      </div>
+    </section>
+
+    <section class="section final-section" id="final">
+      <div class="final-card reveal">
+        <div class="tiny-kicker">FIN DEL RECORRIDO, NO DEL CONTRATO</div>
+        <h3>Feliz capítulo 17, Anto.</h3>
+        <p>Te quiero muchísimo. — Valen 🩶</p>
+        <button id="replayBtn" class="primary-btn" type="button">Lluvia de corazones otra vez</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="auroraExperience" class="aurora-experience" hidden role="dialog" aria-modal="true" aria-labelledby="auroraTitle">
+    <canvas id="auroraCanvas" aria-hidden="true"></canvas>
+    <div class="aurora-vignette" aria-hidden="true"></div>
+    <div class="aurora-copy">
+      <div class="tiny-kicker">17 VELITAS APAGADAS ✓</div>
+      <h4 id="auroraTitle">Deseo enviado al universo.</h4>
+      <p>Ahora disfrutá esto un segundo, porque quedó demasiado lindo como para no hacerlo pantalla completa.</p>
+      <button id="closeAuroraBtn" class="aurora-close primary-btn" type="button">Seguir ✨</button>
+    </div>
+  </div>
+
+  <dialog id="memoryDialog" class="memory-dialog">
+    <button id="closeDialog" class="dialog-close" type="button" aria-label="Cerrar">×</button>
+    <div id="dialogContent"></div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
