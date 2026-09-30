@@ -1,9 +1,6 @@
 /*
-  ==============================================================
-  💌 ZONA EDITABLE DE VALEN — PODÉS CAMBIAR ESTO SIN ROMPER NADA
-  ==============================================================
 
-  ⭐ CÓMO AGREGAR FOTOS A LA CONSTELACIÓN DE CORAZONES ⭐
+  CÓMO AGREGAR FOTOS A LA CONSTELACIÓN DE CORAZONES 
 
   1) Poné la foto nueva dentro de la carpeta:
         assets/photos/
@@ -130,7 +127,7 @@ const BIRTHDAY_CONFIG = {
       pending: false
     },
     {
-      name: "Sofía",
+      name: "Sof",
       message: "Hola Anto, te deseo un muy feliz cumpleaños y q la pases hermoso hoy, te quiero mucho",
       pending: false
     },
