@@ -110,7 +110,7 @@ const BIRTHDAY_CONFIG = {
 
   letter: [
     "Anto:",
-    "Feliz cumple, bella. Claramente no me alcanzaba con mandarte un mensajito corto de ""Feliz cumple!"" y listo, así que terminé haciendo esto para vos.",
+    "Feliz cumple, bella. Claramente no me alcanzaba con mandarte un mensajito corto de ¡Feliz cumple! y listo, así que terminé haciendo esto para vos.",
     "Uno de mis recuerdos favoritos con vos es cuando fuimos unos días a lo de mis abuelos y decidiste que TENÍA que mirar toda la saga de Crepúsculo. Yo empecé pensando que iba a morir del cringe y aburrimiento, y terminé disfrutándola justamente de tanto cringe. Ahora cada que veo algo de esa saga me hacen acordar a esos días juntas y es un recuerdo que guardo con muchísimo cariño.",
     "También amo tus audios mortales de cinco minutos mínimo. Siempre arrancas hablando de una cosa y para cuando terminas ya atravesaste tres temas, dos indignaciones y un plan demasido claro y realista de como aniquilar a tu enemigo del momento sea el gobierno o el universo mismo. Espero nunca cambies ese habito porque honestamente creo que no hay nada mas que me saque tanta risa de la nada.",
     "Pero mas alla de tus comportamientos tiranicos y de gobernar el universo, también sos una amiga increíble: sos honesta conmigo, estás cuando importa y hacés que hasta las cosas más normales terminen siendo recuerdos que quiero guardar por toda la eternidad.",
