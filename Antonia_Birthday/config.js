@@ -102,21 +102,23 @@ const BIRTHDAY_CONFIG = {
   },
 
   heroLines: [
-    "17 años de una grandiosa tirana y, lamentablemente para todos, recién empieza.",
-    "Amo tus audios mortales de cinco minutos mínimo. Esto ya cuenta como podcast.",
-    "Hecho con mucho cariño, demasiados corazones y cero intención de ser discreta."
+    "Ya cumple 17 años mi tirana favorita!",
+    "Por otro año lleno de tus audios/podcasts.",
+    "Hecho con mucho cariño, porfavor tomar en cuenta cuando me quiera matar luego.",
+    "Te vigilo, se que te esta gustando mi codigo, JUAJUAJUA."
   ],
 
   letter: [
     "Anto:",
-    "Feliz cumple, bella. Claramente no podía limitarme a mandarte un mensaje normal y listo, así que terminé haciendo todo esto para vos.",
-    "Uno de mis recuerdos favoritos con vos es cuando fuimos unos días a lo de mis abuelos y decidiste que TENÍA que mirar toda la saga Crepúsculo. Yo empecé pensando que iba a morir del cringe y terminé disfrutándola justamente de tanto cringe. Ahora esas películas me hacen acordar a esos días juntas y es un recuerdo que guardo con muchísimo cariño.",
-    "También amo tus audios mortales de cinco minutos mínimo, que arrancan contando una cosa y para cuando terminan ya atravesaron tres temas, dos indignaciones y una conclusión completamente distinta. Nunca cambies eso porque honestamente me encantan.",
-    "Sos una grandiosa tirana, tenés una habilidad especial para convencerme de cosas que inicialmente digo que no y, peor todavía, muchas veces terminás teniendo razón. Pero también sos una amiga increíble: sos honesta conmigo, estás cuando importa y hacés que hasta las cosas más normales terminen siendo recuerdos que quiero guardar.",
-    "Entre días juntas, conversaciones larguísimas, alguna salida al Sodre, planes que salen de la nada y todas las estupideces que nos hacen reír, me hace muy feliz tenerte en mi vida.",
-    "Hace tiempo me dijiste: “Cualquier cosa estoy para vos siempre”. Quiero que sepas que de mi lado es exactamente igual.",
-    "Espero que tus 17 estén llenos de gente que te quiera muchísimo, momentos que valgan la pena guardar, cosas nuevas que te entusiasmen y muchas razones para reírte. Gracias por ser vos, incluso cuando estás ejerciendo tu cargo oficial de tirana.",
-    "Te quiero muchísimo. Feliz cumpleaños, Anto. 🩶",
+    "Feliz cumple, bella. Claramente no me alcanzaba con mandarte un mensajito corto de ""Feliz cumple!"" y listo, así que terminé haciendo esto para vos.",
+    "Uno de mis recuerdos favoritos con vos es cuando fuimos unos días a lo de mis abuelos y decidiste que TENÍA que mirar toda la saga de Crepúsculo. Yo empecé pensando que iba a morir del cringe y aburrimiento, y terminé disfrutándola justamente de tanto cringe. Ahora cada que veo algo de esa saga me hacen acordar a esos días juntas y es un recuerdo que guardo con muchísimo cariño.",
+    "También amo tus audios mortales de cinco minutos mínimo. Siempre arrancas hablando de una cosa y para cuando terminas ya atravesaste tres temas, dos indignaciones y un plan demasido claro y realista de como aniquilar a tu enemigo del momento sea el gobierno o el universo mismo. Espero nunca cambies ese habito porque honestamente creo que no hay nada mas que me saque tanta risa de la nada.",
+    "Pero mas alla de tus comportamientos tiranicos y de gobernar el universo, también sos una amiga increíble: sos honesta conmigo, estás cuando importa y hacés que hasta las cosas más normales terminen siendo recuerdos que quiero guardar por toda la eternidad.",
+    "Entre días juntas, conversaciones larguísimas, alguna salida con los demas, planes que salen de la nada y todas las estupideces que nos hacen reír, me hace muy feliz tenerte en mi vida.",
+    "Hace muuucho tiempo me dijiste: “Cualquier cosa estoy para vos siempre”, para serte sincera desde ese dia es que me di cuenta que no sabria ni quiero saber como seria mi vida si no nos hubieramos conocido, si no nos hubieramos hecho amigas y si no hubiera tenido el honor de darte verguneza como he hecho tantas veces.",
+    "Y tambien quiero que sepas que de mi lado es exactamente igual, estoy para ti cuando lo necesites y para lo que necesites, no lo dudes. (Tambien se algunas cosas de matar a alguien si dejar rastro por si necesitas un secuaz)",
+    "Espero que tus 17 estén llenos de gente que te quiera muchísimo, momentos que valgan la pena guardar, cosas nuevas que te entusiasmen y muchas razones para reírte. Gracias por existir.",
+    "Te quiero muchísimo. Feliz cumpleaños, Anto. 💜",
     "— Valen"
   ],
 
@@ -142,101 +144,101 @@ const BIRTHDAY_CONFIG = {
     ["Mensajes que empiezan con “ANTOOOO”", "∞"],
     ["Audios mortales", "mín. 5:00"],
     ["Saga Crepúsculo soportada juntas", "completa"],
-    ["Cringe convertido en cariño", "100%"],
-    ["Nivel de tiranía de Anto", "grandioso"],
+    ["Cringe convertido en cariño", "98%"],
+    ["Nivel de tiranía de Anto", "exede todo limite"],
     ["“amiga / bella / blda” utilizados", "incontables"],
     ["Conversaciones que cambian de tema sin aviso", "24/7"],
-    ["Veces que te elegiría como amiga", "todas"]
+    ["Veces que negaste conocerme por verguenza", "4 minimo 😢"]
   ],
 
   gallery: [
     {
       src: "assets/photos/anto-portrait-1.jpeg",
-      caption: "Anto siendo Anto ✨"
+      caption: "Sacandose fotos con un cel ageno ✨"
     },
     {
       src: "assets/photos/anto-portrait-2.jpeg",
-      caption: "La grandiosa tirana en cuestión."
+      caption: "La grandiosa tirana en cuestión"
     },
     {
       src: "assets/photos/amigas-espejo.jpeg",
-      caption: "Nosotras + gente linda 🩶"
+      caption: "Que bellas!"
     },
     {
       src: "assets/photos/amigas-casa.jpeg",
-      caption: "Una de esas fotos que quiero guardar siempre."
+      caption: "Nosotras"
     }
   ],
 
   constellation: [
     {
-      title: "Los días en lo de mis abuelos",
-      text: "De mis recuerdos favoritos con vos. Unos días juntas, toda la saga Crepúsculo y yo descubriendo que algo puede dar tanto cringe que termina gustándome. Lo guardo con muchísimo cariño.",
-      photo: "assets/photos/amigas-casa.jpeg"
-    },
-    {
-      title: "Crepúsculo",
-      text: "Esto es básicamente tu culpa. Yo fui obligada a entrar y terminé saliendo con opiniones. Inaceptable, pero memorable.",
+      title: "",
+      text: "...",
       photo: null
     },
     {
-      title: "Tus audios mortales",
-      text: "Cinco minutos mínimo. Una historia principal, tres historias secundarias, alguna indignación y un final que a veces no tiene nada que ver con el principio. Los amo.",
+      title: "",
+      text: "...",
       photo: null
     },
     {
-      title: "Grandiosa tirana",
-      text: "Título oficial y vitalicio. Tenés una capacidad preocupante para lograr que la gente haga lo que querés y encima hacer parecer que fue idea nuestra.",
-      photo: "assets/photos/anto-portrait-2.jpeg"
-    },
-    {
-      title: "Gracias por estar",
-      text: "Me quedo con esa frase tuya: “Cualquier cosa estoy para vos siempre”. Lo mismo vale de mi lado, siempre.",
+      title: "...",
+      text: "...",
       photo: null
     },
     {
-      title: "Tu honestidad",
-      text: "Gracias por decirme lo que pensás de verdad, incluso cuando no es exactamente lo que quería escuchar. Es una de las razones por las que confío tanto en vos.",
+      title: "...",
+      text: "...",
       photo: null
     },
     {
-      title: "Tu humor",
-      text: "Tenés el talento de hacer que una conversación completamente normal se vaya al carajo en cuestión de segundos. Y sí, es un talento.",
+      title: "...",
+      text: "...",
       photo: null
     },
     {
-      title: "Planes y salidas",
-      text: "Por las juntadas, los planes improvisados y todas esas cosas que en el momento parecen normales y después terminan siendo recuerdos lindos.",
-      photo: "assets/photos/amigas-espejo.jpeg"
-    },
-    {
-      title: "Esta foto",
-      text: "No necesita una historia enorme. Me gusta porque estamos juntas y eso ya alcanza.",
-      photo: "assets/photos/amigas-casa.jpeg"
-    },
-    {
-      title: "Bella.exe",
-      text: "Evidencia visual de que la tiranía puede venir con carita de inocente.",
-      photo: "assets/photos/anto-portrait-1.jpeg"
-    },
-    {
-      title: "Tu gente",
-      text: "Ojalá hoy te quede clarísimo cuánta gente te quiere y lo importante que sos para todos nosotros.",
+      title: "...",
+      text: "...",
       photo: null
     },
     {
-      title: "17",
-      text: "Que tus 17 tengan muchísimo de vos: risas, carácter, planes, historias, gente linda y cosas que después queramos recordar.",
+      title: "...",
+      text: "...",
       photo: null
     },
     {
-      title: "Nosotras",
-      text: "Gracias por todas las conversaciones, los audios, las juntadas, las opiniones intensas y los momentos serios en el medio del caos.",
-      photo: "assets/photos/amigas-espejo.jpeg"
+      title: "...",
+      text: "...",
+      photo: null
     },
     {
-      title: "El próximo recuerdo",
-      text: "Este queda para algo que todavía no pasó. Después veremos qué estupidez termina ocupando este lugar.",
+      title: "...",
+      text: "...",
+      photo: null
+    },
+    {
+      title: "...",
+      text: "...",
+      photo: null
+    },
+    {
+      title: "...",
+      text: "...",
+      photo: null
+    },
+    {
+      title: "...",
+      text: "...",
+      photo: null
+    },
+    {
+      title: "...",
+      text: "...",
+      photo: null
+    },
+    {
+      title: "...",
+      text: "...",
       photo: null
     }
   ]
