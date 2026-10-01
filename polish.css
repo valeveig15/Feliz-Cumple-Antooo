@@ -1188,3 +1188,187 @@ body{
     height:118px !important;
   }
 }
+
+
+/* ===== Sobre emocional: versión final ===== */
+.envelope-wrap{
+  gap:18px !important;
+  margin-top:46px !important;
+}
+.envelope{
+  width:min(625px,95vw) !important;
+  aspect-ratio:1.67 !important;
+}
+.envelope::before{
+  content:"";
+  position:absolute;
+  z-index:-2;
+  inset:-16% -13% -20%;
+  border-radius:50%;
+  background:
+    radial-gradient(ellipse at 50% 42%,rgba(129,31,69,.18),transparent 58%),
+    radial-gradient(ellipse at 50% 62%,rgba(80,187,175,.065),transparent 67%);
+  filter:blur(25px);
+  pointer-events:none;
+}
+.envelope-shadow{
+  left:9% !important;
+  right:9% !important;
+  bottom:-8.5% !important;
+  height:18% !important;
+  background:radial-gradient(ellipse,rgba(55,16,32,.34),rgba(55,16,32,.11) 46%,transparent 70%) !important;
+  filter:blur(16px) !important;
+}
+
+/* el dorso gana una textura muy sutil tipo papel grueso */
+.envelope-back{
+  overflow:hidden !important;
+}
+.envelope-back::before{
+  content:"" !important;
+  position:absolute !important;
+  inset:0 !important;
+  opacity:.3 !important;
+  background:
+    repeating-linear-gradient(18deg,transparent 0 3px,rgba(255,255,255,.022) 4px,transparent 5px),
+    repeating-linear-gradient(91deg,transparent 0 5px,rgba(29,2,13,.025) 6px,transparent 7px) !important;
+  mix-blend-mode:soft-light !important;
+}
+.envelope-back::after{
+  inset:9px !important;
+  border-radius:15px !important;
+  border:1px solid rgba(255,255,255,.055) !important;
+  box-shadow:
+    inset 0 0 26px rgba(27,2,13,.10),
+    0 0 0 1px rgba(53,7,26,.06) !important;
+}
+
+/* forro interior con patrón mínimo y elegante */
+.envelope-lining{
+  clip-path:polygon(0 0,100% 0,50% 95%) !important;
+  background:
+    radial-gradient(circle at 13px 13px,rgba(255,255,255,.46) 0 1.2px,transparent 1.8px) 0 0/28px 28px,
+    radial-gradient(circle at 0 0,rgba(119,28,65,.23) 0 2px,transparent 2.6px) 14px 14px/28px 28px,
+    linear-gradient(135deg,#b2ebe3 0%,#7bd3c7 48%,#4eaaa5 100%) !important;
+}
+
+/* carta visible antes de abrir */
+.letter-preview{
+  justify-content:center !important;
+  gap:5px !important;
+  text-align:left !important;
+}
+.letter-preview-small{
+  color:#8a6a76 !important;
+  font-size:.64rem !important;
+  letter-spacing:.24em !important;
+}
+.letter-preview strong{
+  font-family:Georgia,"Times New Roman",serif !important;
+  font-size:clamp(2.5rem,6.5vw,4rem) !important;
+  font-style:italic !important;
+  font-weight:400 !important;
+  line-height:.92 !important;
+  margin:3px 0 9px !important;
+  color:#7c183f !important;
+}
+.letter-preview > span:not(.letter-preview-small){
+  max-width:260px;
+  font-family:Georgia,"Times New Roman",serif !important;
+  font-size:.88rem !important;
+  line-height:1.45 !important;
+  color:#6b4d58 !important;
+  opacity:.82 !important;
+}
+.letter-preview em{
+  margin-top:6px !important;
+  font-family:Georgia,"Times New Roman",serif !important;
+  font-size:1.35rem !important;
+  color:#9d2853 !important;
+}
+
+/* líneas de pliegue apenas visibles para que el sobre tenga estructura real */
+.envelope-front{
+  position:absolute !important;
+}
+.envelope-front::before,
+.envelope-front::after{
+  opacity:.72 !important;
+  filter:blur(.1px);
+}
+
+/* solapa con una ligera arista de papel */
+.envelope-flap{
+  transform-origin:50% 1% !important;
+  backface-visibility:hidden !important;
+}
+.envelope-flap::before{
+  content:"";
+  position:absolute;
+  left:4%;
+  right:4%;
+  top:1px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.2) 15% 85%,transparent);
+  opacity:.6;
+}
+
+/* sello de cera más artesanal */
+.wax{
+  overflow:visible !important;
+}
+.wax::after{
+  content:"" !important;
+  display:block !important;
+  position:absolute !important;
+  width:13px !important;
+  height:9px !important;
+  right:3px !important;
+  bottom:8px !important;
+  border-radius:58% 42% 60% 40% !important;
+  background:#681032 !important;
+  box-shadow:
+    -62px -2px 0 -2px #8b2149,
+    -6px -63px 0 -3px #74163b !important;
+  opacity:.85;
+}
+.wax span{
+  letter-spacing:-.04em !important;
+}
+.wax i{
+  opacity:.82 !important;
+}
+
+/* la apertura se siente menos plana */
+.envelope.open{
+  transform:translateY(3px) !important;
+}
+.envelope.open .envelope-flap{
+  transform:rotateX(180deg) !important;
+  filter:brightness(.88) saturate(.95) !important;
+}
+.envelope.open .letter-preview{
+  transform:translateY(-68%) rotateX(.8deg) scale(1.012) !important;
+  box-shadow:
+    0 34px 70px rgba(58,14,33,.28),
+    inset 0 0 0 1px rgba(94,54,67,.10),
+    inset 0 1px 0 rgba(255,255,255,.86) !important;
+}
+.envelope.open .envelope-front{
+  filter:brightness(.98);
+}
+
+/* pista más delicada */
+.tap-hint{
+  color:#7f626d !important;
+  font-size:.73rem !important;
+  letter-spacing:.16em !important;
+  font-weight:700;
+  opacity:.8;
+}
+
+@media(max-width:620px){
+  .letter-preview{padding:25px 26px !important;}
+  .letter-preview strong{font-size:clamp(2.25rem,11vw,3.3rem) !important;}
+  .letter-preview > span:not(.letter-preview-small){font-size:.78rem !important;max-width:210px;}
+}
