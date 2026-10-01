@@ -159,9 +159,19 @@
   }
 
   $("#startGateBtn").addEventListener("click", () => {
-    startMusic();
+    // Abrir el expediente nunca debe depender de que cargue la música.
     swapGateView($("#gateIntro"), $("#gateGame"));
     renderAliasStage();
+
+    // La música se intenta después; si falla, el juego sigue funcionando.
+    setTimeout(() => {
+      try {
+        startMusic();
+      } catch (error) {
+        console.warn("La música no pudo iniciarse, pero el expediente sigue.", error);
+        setMusicButton(false);
+      }
+    }, 0);
   });
 
   function renderAliasStage() {
@@ -409,8 +419,8 @@
     state.opened = true;
     document.body.classList.remove("locked");
     $("#opening").classList.add("is-gone");
-    startMusic();
     burstHearts(36);
+    try { startMusic(); } catch (error) { console.warn("Música no disponible.", error); }
     setTimeout(() => $("#inicio").scrollIntoView({ behavior: "smooth" }), 300);
   });
 
