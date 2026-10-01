@@ -2166,3 +2166,163 @@ body::after{
     font-size:.58rem !important;
   }
 }
+
+
+/* ===== Última prueba: versión móvil corregida ===== */
+@media (max-width:760px){
+
+  /* La cronología deja de usar tarjetas apretadas en dos columnas. */
+  .chronology-grid{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:8px !important;
+    width:100% !important;
+  }
+
+  .chronology-grid .saga-card,
+  .chronology-card{
+    grid-column:auto !important;
+    width:100% !important;
+    min-height:68px !important;
+    padding:9px 11px !important;
+    border-radius:15px !important;
+    display:grid !important;
+    grid-template-columns:54px minmax(0,1fr) 82px !important;
+    grid-template-rows:1fr !important;
+    align-items:center !important;
+    justify-items:stretch !important;
+    gap:10px !important;
+    text-align:left !important;
+  }
+
+  /* anula la regla vieja que hacía que la última tarjeta ocupara dos columnas */
+  .chronology-grid .saga-card:last-child{
+    grid-column:auto !important;
+  }
+
+  .chronology-grid .crime-icon{
+    width:48px !important;
+    min-width:48px !important;
+    height:42px !important;
+    min-height:42px !important;
+    margin:0 !important;
+    transform:none !important;
+    display:grid !important;
+    place-items:center !important;
+    font-size:1.55rem !important;
+  }
+
+  .chronology-grid .crime-car{
+    width:46px !important;
+    height:30px !important;
+  }
+
+  .chronology-grid .saga-card strong{
+    min-width:0 !important;
+    margin:0 !important;
+    font-family:Georgia,"Times New Roman",serif !important;
+    font-size:.92rem !important;
+    line-height:1.15 !important;
+    text-align:left !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  .chronology-grid .chronology-year{
+    justify-self:end !important;
+    width:78px !important;
+    margin:0 !important;
+    font-size:.52rem !important;
+    line-height:1.15 !important;
+    letter-spacing:.06em !important;
+    text-align:right !important;
+    white-space:normal !important;
+  }
+
+  .chronology-grid .saga-card.correct{
+    opacity:1 !important;
+  }
+
+  .chronology-grid .saga-card.correct .chronology-year{
+    font-size:.78rem !important;
+    font-weight:900 !important;
+    color:#a9f2db !important;
+  }
+
+  /* Los seis pasos entran completos sin desbordarse. */
+  .saga-picked{
+    width:100% !important;
+    display:grid !important;
+    grid-template-columns:repeat(6,1fr) !important;
+    gap:5px !important;
+    margin:2px 0 14px !important;
+  }
+
+  .saga-picked span{
+    width:100% !important;
+    max-width:34px !important;
+    aspect-ratio:1 !important;
+    height:auto !important;
+    justify-self:center !important;
+    font-size:.65rem !important;
+  }
+
+  /* La cabecera de la última prueba también se compacta un poco. */
+  .gate-game:has(.chronology-grid) .gate-stage-head{
+    margin-bottom:12px !important;
+  }
+
+  .gate-game:has(.chronology-grid) .gate-stage-head p{
+    margin-bottom:0 !important;
+  }
+
+  .gate-game:has(.chronology-grid) .gate-status{
+    font-size:.78rem !important;
+    line-height:1.4 !important;
+  }
+}
+
+@media (max-width:390px){
+  .chronology-grid .saga-card,
+  .chronology-card{
+    grid-template-columns:46px minmax(0,1fr) 68px !important;
+    gap:7px !important;
+    min-height:64px !important;
+    padding:8px 9px !important;
+  }
+
+  .chronology-grid .crime-icon{
+    width:42px !important;
+    min-width:42px !important;
+    height:38px !important;
+    min-height:38px !important;
+    font-size:1.35rem !important;
+  }
+
+  .chronology-grid .crime-car{
+    transform:scale(.88) !important;
+    transform-origin:center !important;
+  }
+
+  .chronology-grid .saga-card strong{
+    font-size:.82rem !important;
+  }
+
+  .chronology-grid .chronology-year{
+    width:64px !important;
+    font-size:.47rem !important;
+  }
+
+  .chronology-grid .saga-card.correct .chronology-year{
+    font-size:.7rem !important;
+  }
+
+  .saga-picked{
+    gap:3px !important;
+  }
+
+  .saga-picked span{
+    max-width:30px !important;
+    font-size:.58rem !important;
+  }
+}
