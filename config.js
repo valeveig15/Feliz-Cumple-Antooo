@@ -133,11 +133,14 @@ const BIRTHDAY_CONFIG = {
       message: "Hola Anto, te deseo un muy feliz cumpleaños y q la pases hermoso hoy, te quiero mucho",
       pending: false
     },
-    { name: "Martina", message: "MENSAJE PENDIENTE", pending: true },
+    { name: "Martina", message: "Antooo, te quiero muchísimo y me hace muy feliz tenerte en mi vida.
+Gracias por estar siempre y por ser una amiga tan increíble.
+Te quiero hoy, mañana y siempre.", pending: false },
     { name: "Toty", message: "MENSAJE PENDIENTE", pending: true },
     { name: "Cande", message: "MENSAJE PENDIENTE", pending: true },
     { name: "Bruno", message: "MENSAJE PENDIENTE", pending: true },
-    { name: "Aye", message: "MENSAJE PENDIENTE", pending: true }
+    { name: "Aye", message: "Hola bella, te deseo un muy feliz cumple, muchas gracias por todo lo que haces por mí (auqnue la mayoría de veces lo hagas inconscientemente ), no te lo digo muy seguido pero posta sos una persona que con pequeñas cosas me haces sentir mucho mejor en el día a día . Ej: estamos caminando, voy um poco atrás y me esperas o me haces hacia adelante, o aveces cuando hablo y no me escuchan haces una pausa para escucharme. Son cosas muy tontas pero que de verdad hacen la diferencia cuando estás teniendo un mal día o no te sentís muy bien, por eso te agradezco por ser esa persona que siempre está. Nuevamente feliz cumpleaños Anto
+Att: Ay", pending: false }
   ],
 
   receiptItems: [
