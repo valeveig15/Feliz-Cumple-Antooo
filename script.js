@@ -234,9 +234,9 @@
       <div class="gate-stage-head">
         <span class="gate-stage-number">02</span>
         <div>
-          <div class="gate-eyebrow">NIVEL PODCAST</div>
-          <h2>Sin Google, Anto.</h2>
-          <p>Tenés que acertar las ${C.unlockGame.trivia.length}. Si fallás una, reaparece más adelante.</p>
+          <div class="gate-eyebrow">SIN GOOGLE</div>
+          <h2>A ver qué tanto sabés.</h2>
+          <p>Tenés que acertar las ${C.unlockGame.trivia.length}. Si fallás una, te vuelve a aparecer después.</p>
         </div>
       </div>
       <div class="trivia-counter"><span>${gateState.triviaCorrect}</span> / ${C.unlockGame.trivia.length} resueltas</div>
@@ -244,7 +244,7 @@
       <div class="trivia-options" id="triviaOptions"></div>
     `;
 
-    gateMessage(gateState.triviaMistakes ? `Errores: ${gateState.triviaMistakes}. Esa te vuelve a aparecer después.` : "Sin Google. Confío en vos.");
+    gateMessage("Sin Google. Confío en vos.");
     const options = shuffle([...q.options]);
     const wrap = $("#triviaOptions", gateStage);
     options.forEach(option => {
@@ -277,6 +277,15 @@
     setTimeout(renderTriviaQuestion, 850);
   }
 
+  function crimeCaseIcon(item) {
+    const icon = item.icon || "search";
+    if (icon === "yellow-car") {
+      return '<span class="crime-icon crime-car" aria-hidden="true"><i></i><b></b></span>';
+    }
+    const symbols = { letter: "✉", footprints: "👣", city: "▥", river: "≋", disk: "▣", search: "⌕" };
+    return `<span class="crime-icon crime-icon-${escapeHTML(icon)}" aria-hidden="true">${symbols[icon] || symbols.search}</span>`;
+  }
+
   function renderChronologyStage() {
     gateState.stage = 3;
     gateState.chronologyIndex = 0;
@@ -288,9 +297,9 @@
       <div class="gate-stage-head">
         <span class="gate-stage-number">03</span>
         <div>
-          <div class="gate-eyebrow">LÍNEA TEMPORAL</div>
-          <h2>Ahora sí: nivel enfermito.</h2>
-          <p>Tocá los casos según el año de arresto o captura, del más viejo al más reciente. Los años aparecen solo cuando acertás.</p>
+          <div class="gate-eyebrow">ÚLTIMA PRUEBA</div>
+          <h2>Ordená los casos.</h2>
+          <p>Tocalos según el año de arresto o captura, del más viejo al más reciente. Los años aparecen cuando acertás.</p>
         </div>
       </div>
       <div class="saga-picked" id="chronologyPicked" aria-label="Progreso de la línea temporal"></div>
@@ -303,7 +312,7 @@
       btn.type = "button";
       btn.className = "saga-card chronology-card";
       btn.dataset.label = item.label;
-      btn.innerHTML = `<span class="case-file-icon" aria-hidden="true">${escapeHTML(item.symbol || "🔎")}</span><strong>${escapeHTML(item.label)}</strong><small class="chronology-year">AÑO BLOQUEADO</small>`;
+      btn.innerHTML = `${crimeCaseIcon(item)}<strong>${escapeHTML(item.label)}</strong><small class="chronology-year">AÑO BLOQUEADO</small>`;
       btn.addEventListener("click", () => handleChronologyPick(btn, item));
       grid.appendChild(btn);
     });
@@ -434,21 +443,90 @@
   // Gallery + dialog
   // -----------------------------
   const gallery = $("#gallery");
-  C.gallery.forEach((item, index) => {
-    const card = document.createElement("button");
-    card.className = "gallery-card reveal";
-    card.type = "button";
-    card.setAttribute("aria-label", `Abrir foto ${index + 1}`);
-    card.innerHTML = `<img src="${item.src}" alt="${escapeHTML(item.caption)}"><div class="gallery-caption">${escapeHTML(item.caption)}</div>`;
-    card.addEventListener("click", () => openDialog({ title: item.caption, text: "", photo: item.src }));
-    gallery.appendChild(card);
-    observer.observe(card);
-  });
+
+  const imageExtensions = new Set(["jpg","jpeg","png","webp","gif","avif"]);
+  const videoExtensions = new Set(["mp4","webm","mov","m4v","ogg"]);
+
+  function galleryKind(path) {
+    const ext = String(path).split(".").pop().toLowerCase();
+    if (imageExtensions.has(ext)) return "image";
+    if (videoExtensions.has(ext)) return "video";
+    return null;
+  }
+
+  function rawGithubUrl(path) {
+    return "https://raw.githubusercontent.com/valeveig15/Feliz-Cumple-Antooo/main/" +
+      path.split("/").map(encodeURIComponent).join("/");
+  }
+
+  function renderGalleryItems(items) {
+    gallery.replaceChildren();
+    const mixed = shuffle([...items]);
+
+    mixed.forEach((item, index) => {
+      const src = item.src || rawGithubUrl(item.path);
+      const kind = item.kind || galleryKind(item.path || item.src || "");
+      if (!kind) return;
+
+      if (kind === "video") {
+        const card = document.createElement("article");
+        card.className = `gallery-card gallery-shape-${index % 7} gallery-video-card`;
+        const video = document.createElement("video");
+        video.src = src;
+        video.controls = true;
+        video.playsInline = true;
+        video.preload = "metadata";
+        video.setAttribute("aria-label", `Video ${index + 1} de la galería`);
+        card.appendChild(video);
+        gallery.appendChild(card);
+        return;
+      }
+
+      const card = document.createElement("button");
+      card.className = `gallery-card gallery-shape-${index % 7}`;
+      card.type = "button";
+      card.setAttribute("aria-label", `Abrir foto ${index + 1}`);
+
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = "Foto de Anto y sus amigos";
+      img.loading = "lazy";
+      card.appendChild(img);
+
+      card.addEventListener("click", () => openDialog({ photo: src }));
+      gallery.appendChild(card);
+    });
+  }
+
+  const fallbackGallery = (C.gallery || []).map(item => ({ src: item.src, kind: galleryKind(item.src) }));
+  renderGalleryItems(fallbackGallery);
+
+  async function loadAllRepoMedia() {
+    try {
+      const response = await fetch("https://api.github.com/repos/valeveig15/Feliz-Cumple-Antooo/git/trees/main?recursive=1", {
+        headers: { "Accept": "application/vnd.github+json" }
+      });
+      if (!response.ok) return;
+      const data = await response.json();
+      const media = (data.tree || [])
+        .filter(entry => entry.type === "blob" && entry.path.startsWith("assets/photos/"))
+        .map(entry => ({ path: entry.path, kind: galleryKind(entry.path) }))
+        .filter(entry => entry.kind);
+      if (media.length) renderGalleryItems(media);
+    } catch (error) {
+      console.warn("No pude actualizar automáticamente la galería; uso la lista local.", error);
+    }
+  }
+  loadAllRepoMedia();
 
   const dialog = $("#memoryDialog");
   const dialogContent = $("#dialogContent");
   function openDialog(item) {
-    dialogContent.innerHTML = `<div class="dialog-inner">${item.photo ? `<img src="${item.photo}" alt="${escapeHTML(item.title || "Recuerdo")}">` : ""}<h4>${escapeHTML(item.title || "Recuerdo")}</h4>${item.text ? `<p>${escapeHTML(item.text)}</p>` : ""}</div>`;
+    const hasPhoto = Boolean(item.photo);
+    const hasTitle = Boolean(item.title);
+    const hasText = Boolean(item.text);
+    const modeClass = hasPhoto && !hasTitle && !hasText ? "media-only" : (!hasTitle ? "text-only" : "");
+    dialogContent.innerHTML = `<div class="dialog-inner ${modeClass}">${hasPhoto ? `<img src="${item.photo}" alt="Recuerdo de Anto">` : ""}${hasTitle ? `<h4>${escapeHTML(item.title)}</h4>` : ""}${hasText ? `<p>${escapeHTML(item.text)}</p>` : ""}</div>`;
     if (typeof dialog.showModal === "function") dialog.showModal();
     else dialog.setAttribute("open", "");
   }
@@ -479,7 +557,7 @@
     btn.style.left = `${x}%`;
     btn.style.top = `${y}%`;
     btn.style.animationDelay = `${(i % 7) * .24}s`;
-    btn.setAttribute("aria-label", `Abrir corazón: ${item.title}`);
+    btn.setAttribute("aria-label", `Abrir corazón ${i + 1}`);
     btn.addEventListener("click", () => {
       state.visitedHearts.add(i);
       btn.classList.add("visited");
