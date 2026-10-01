@@ -737,14 +737,58 @@ window.__birthdayBooted = true;
   $("#magicBlowBtn").addEventListener("click", () => extinguish(4));
 
   let allOutDone = false;
+
+  async function stopBirthdayMic() {
+    if (state.micRAF) {
+      cancelAnimationFrame(state.micRAF);
+      state.micRAF = null;
+    }
+
+    if (state.micStream) {
+      state.micStream.getTracks().forEach(track => {
+        try { track.stop(); } catch {}
+      });
+      state.micStream = null;
+    }
+
+    if (state.audioContext) {
+      try {
+        if (state.audioContext.state !== "closed") await state.audioContext.close();
+      } catch {}
+      state.audioContext = null;
+    }
+
+    state.analyser = null;
+  }
+
   function onAllCandlesOut() {
     if (allOutDone) return;
     allOutDone = true;
-    if (state.micRAF) cancelAnimationFrame(state.micRAF);
-    if (state.micStream) state.micStream.getTracks().forEach(t => t.stop());
-    fireworks(3400);
-    burstHearts(40);
-    setTimeout(showAuroraExperience, 700);
+
+    stopBirthdayMic();
+
+    const micBtn = $("#micBtn");
+    const magicBtn = $("#magicBlowBtn");
+    if (micBtn) {
+      micBtn.disabled = true;
+      micBtn.textContent = "17 velitas apagadas ✓";
+    }
+    if (magicBtn) magicBtn.disabled = true;
+
+    burstHearts(24);
+
+    // No superponemos fuegos artificiales + aurora + micrófono:
+    // en celulares eso hacía que la página se sintiera trabada.
+    setTimeout(() => {
+      try {
+        showAuroraExperience();
+      } catch (error) {
+        console.warn("No pude abrir la aurora.", error);
+        document.body.classList.remove("locked", "aurora-open");
+        toast("¡Deseo enviado! ✨", 3200);
+        $("#recibo")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 420);
   }
 
   // -----------------------------
@@ -758,7 +802,8 @@ window.__birthdayBooted = true;
   let auroraTimeStart = 0;
 
   function resizeAurora() {
-    const dpr = Math.min(devicePixelRatio || 1, 2);
+    const mobileAurora = innerWidth <= 760;
+    const dpr = Math.min(devicePixelRatio || 1, mobileAurora ? 1.25 : 1.75);
     const w = innerWidth;
     const h = innerHeight;
     auroraCanvas.width = Math.max(1, Math.floor(w * dpr));
@@ -769,7 +814,8 @@ window.__birthdayBooted = true;
     auroraSize = { w, h, dpr };
 
     const rng = mulberry32(170117);
-    auroraStars = Array.from({ length: Math.min(320, Math.floor(w * h / 4300)) }, () => ({
+    const starLimit = mobileAurora ? 150 : 260;
+    auroraStars = Array.from({ length: Math.min(starLimit, Math.floor(w * h / (mobileAurora ? 6800 : 4800))) }, () => ({
       x: rng() * w,
       y: rng() * h * .76,
       r: .25 + rng() * 1.25,
@@ -789,7 +835,8 @@ window.__birthdayBooted = true;
   }
 
   function drawAuroraCurtain(ctx, cfg, t, w, h) {
-    const step = Math.max(4, Math.round(w / 245));
+    const mobileAurora = w <= 760;
+    const step = Math.max(mobileAurora ? 7 : 5, Math.round(w / (mobileAurora ? 88 : 170)));
     const baseY = h * cfg.y;
     const amp = h * cfg.amp;
 
@@ -797,7 +844,7 @@ window.__birthdayBooted = true;
     ctx.globalCompositeOperation = "screen";
 
     // broad luminous body
-    ctx.filter = `blur(${Math.max(8, h * .013)}px)`;
+    ctx.filter = `blur(${Math.max(w <= 760 ? 5 : 7, h * (w <= 760 ? .008 : .011))}px)`;
     for (let x = -step; x <= w + step; x += step) {
       const n = auroraWave(x, w, t * cfg.speed, cfg.layer);
       const y = baseY + n * amp;
@@ -824,7 +871,7 @@ window.__birthdayBooted = true;
 
     // crisp inner folds
     ctx.filter = "blur(1.2px)";
-    for (let x = 0; x <= w; x += step * 2) {
+    for (let x = 0; x <= w; x += step * (w <= 760 ? 4 : 3)) {
       const n = auroraWave(x, w, t * cfg.speed, cfg.layer);
       const y = baseY + n * amp;
       const fold = .5 + .5 * Math.sin(x * .058 + t * .96 + cfg.layer * 2.2);
@@ -948,24 +995,49 @@ window.__birthdayBooted = true;
   }
 
   function showAuroraExperience() {
+    if (!auroraExperience || !auroraCanvas || !auroraCtx) {
+      document.body.classList.remove("locked", "aurora-open");
+      $("#recibo")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+
+    if (state.auroraRAF) cancelAnimationFrame(state.auroraRAF);
+    state.auroraRAF = null;
+
     auroraExperience.hidden = false;
-    document.body.classList.add("locked");
+    document.body.classList.add("locked", "aurora-open");
     resizeAurora();
     auroraTimeStart = performance.now();
-    requestAnimationFrame(() => auroraExperience.classList.add("show"));
-    if (state.auroraRAF) cancelAnimationFrame(state.auroraRAF);
-    state.auroraRAF = requestAnimationFrame(drawAuroraFrame);
+
+    requestAnimationFrame(() => {
+      auroraExperience.classList.add("show");
+      state.auroraRAF = requestAnimationFrame(drawAuroraFrame);
+    });
   }
 
   function closeAuroraExperience() {
+    if (!auroraExperience) return;
+
     auroraExperience.classList.remove("show");
-    if (state.auroraRAF) cancelAnimationFrame(state.auroraRAF);
-    state.auroraRAF = null;
+
+    if (state.auroraRAF) {
+      cancelAnimationFrame(state.auroraRAF);
+      state.auroraRAF = null;
+    }
+
+    document.body.classList.remove("aurora-open");
+
     setTimeout(() => {
       auroraExperience.hidden = true;
       document.body.classList.remove("locked");
-      $("#recibo").scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 620);
+
+      try {
+        auroraCtx.setTransform(1,0,0,1,0,0);
+        auroraCtx.clearRect(0,0,auroraCanvas.width,auroraCanvas.height);
+      } catch {}
+
+      $("#recibo")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 360);
   }
 
   $("#closeAuroraBtn").addEventListener("click", closeAuroraExperience);
@@ -1040,6 +1112,12 @@ window.__birthdayBooted = true;
 
   function animateAmbient() {
     actx.clearRect(0, 0, innerWidth, innerHeight);
+
+    if (document.body.classList.contains("aurora-open")) {
+      requestAnimationFrame(animateAmbient);
+      return;
+    }
+
     for (const m of motes) {
       m.y -= m.dy;
       if (m.y < -5) { m.y = innerHeight + 5; m.x = Math.random() * innerWidth; }
