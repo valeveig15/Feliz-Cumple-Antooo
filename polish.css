@@ -579,3 +579,144 @@
   .candles{bottom:343px !important;width:52% !important;}
   .constellation-center{width:68%;padding:18px 16px;}
 }
+
+
+/* ===== Refinamiento final ===== */
+.opening::before{
+  background:
+    linear-gradient(90deg,rgba(12,3,8,.91) 0%,rgba(12,3,8,.70) 45%,rgba(12,3,8,.60) 100%),
+    linear-gradient(180deg,rgba(103,12,48,.24),rgba(5,2,6,.82)),
+    url("assets/photos/anto-portrait-1.jpeg") center 38%/cover no-repeat !important;
+}
+
+.classified-seal{
+  position:absolute !important;
+  z-index:1 !important;
+  right:-18px !important;
+  top:-4px !important;
+  width:196px !important;
+  height:196px !important;
+  opacity:.72 !important;
+  transform:rotate(-12deg) !important;
+  pointer-events:none;
+  color:#d34f67;
+  filter:drop-shadow(0 2px 1px rgba(0,0,0,.38));
+}
+.classified-stamp-svg{width:100%;height:100%;overflow:visible;}
+.stamp-ring{fill:none;stroke:#d34f67;stroke-linecap:round;}
+.stamp-ring-outer{stroke-width:5.2;stroke-dasharray:2 1.4;}
+.stamp-ring-inner{stroke-width:2.7;opacity:.9;}
+.stamp-dot{fill:#d34f67;}
+.stamp-band{fill:rgba(18,5,10,.70);stroke:#d34f67;stroke-width:3.4;}
+.stamp-arc-text,.stamp-main{fill:#dc5a70;font-family:"Courier New",monospace;font-weight:1000;letter-spacing:2.8px;}
+.stamp-arc-text{font-size:18px;}
+.stamp-arc-small{font-size:11px;letter-spacing:3.2px;}
+.stamp-main{font-size:17px;letter-spacing:5px;}
+.stamp-main-anto{font-size:20px;letter-spacing:4px;}
+
+.polaroid figcaption{display:none !important;}
+.photo-stack .p1{left:-1% !important;top:8% !important;width:clamp(168px,20vw,270px) !important;transform:rotate(-7deg) !important;z-index:2 !important;}
+.photo-stack .p2{right:0 !important;top:5% !important;width:clamp(172px,20vw,275px) !important;transform:rotate(7deg) !important;z-index:1 !important;}
+.photo-stack .p3{left:20% !important;top:32% !important;width:clamp(235px,28vw,350px) !important;transform:rotate(1.5deg) !important;z-index:5 !important;}
+.photo-stack .p3 img{height:clamp(240px,31vw,370px) !important;object-position:50% 42% !important;}
+.photo-stack .p4{right:2% !important;bottom:-1% !important;width:clamp(180px,21vw,285px) !important;transform:rotate(-5deg) !important;z-index:3 !important;}
+
+.envelope{
+  width:min(590px,94vw) !important;
+  aspect-ratio:1.64 !important;
+  filter:drop-shadow(0 36px 38px rgba(65,20,39,.28)) drop-shadow(0 8px 10px rgba(65,20,39,.14)) !important;
+}
+.envelope-back{
+  border-radius:18px !important;
+  background:radial-gradient(circle at 22% 17%,rgba(255,255,255,.13),transparent 24%),linear-gradient(145deg,#8f244d 0%,#74163b 48%,#541028 100%) !important;
+  border:1px solid rgba(62,8,30,.42) !important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.11),inset 0 -24px 42px rgba(31,4,15,.23),inset 0 18px 28px rgba(255,255,255,.025) !important;
+}
+.envelope-lining{
+  left:2.2% !important;right:2.2% !important;top:2.2% !important;height:70% !important;
+  background:
+    radial-gradient(circle at 12px 12px,rgba(255,255,255,.34) 0 1.4px,transparent 1.8px) 0 0/25px 25px,
+    radial-gradient(circle at 12px 12px,rgba(177,45,88,.24) 0 2.2px,transparent 2.7px) 12px 12px/25px 25px,
+    linear-gradient(135deg,#9be2d8,#70cabc 58%,#56aca8) !important;
+  box-shadow:inset 0 -18px 28px rgba(20,56,58,.16) !important;
+}
+.envelope-front{
+  clip-path:polygon(0 27%,50% 69%,100% 27%,100% 100%,0 100%) !important;
+  border-radius:18px !important;
+  background:linear-gradient(155deg,rgba(255,255,255,.08),transparent 42%),linear-gradient(165deg,#8d214b 0 50%,#6b1538 100%) !important;
+  border:1px solid rgba(62,8,30,.32) !important;
+  box-shadow:inset 0 -22px 31px rgba(35,4,18,.19),inset 0 1px rgba(255,255,255,.09) !important;
+}
+.envelope-flap{
+  clip-path:polygon(0 0,100% 0,50% 69%) !important;
+  border-radius:18px !important;
+  background:linear-gradient(155deg,rgba(255,255,255,.10),transparent 38%),linear-gradient(160deg,#992955,#6f173a 86%) !important;
+  box-shadow:inset 0 1px rgba(255,255,255,.10),0 2px 3px rgba(43,4,20,.16) !important;
+}
+.letter-preview{
+  width:84% !important;left:8% !important;top:14% !important;height:76% !important;
+  padding:31px 33px !important;border-radius:7px !important;color:#4c2636 !important;
+  background:linear-gradient(110deg,rgba(255,255,255,.44),transparent 30%),repeating-linear-gradient(0deg,#fffaf0 0 30px,#f8efe2 31px) !important;
+  box-shadow:0 14px 28px rgba(48,7,24,.21),inset 0 0 0 1px rgba(92,49,64,.11) !important;
+}
+.mail-stamp,.postmark{display:none !important;}
+.wax{
+  width:86px !important;height:86px !important;top:44% !important;
+  border-radius:46% 55% 49% 58% / 55% 47% 59% 45% !important;
+  background:radial-gradient(circle at 30% 23%,rgba(255,206,221,.52) 0 4%,transparent 5%),radial-gradient(circle at 36% 31%,#c94d78 0 8%,#a42657 25%,#74153b 62%,#4b0a26 100%) !important;
+  box-shadow:0 13px 19px rgba(45,6,24,.42),inset 0 4px 5px rgba(255,255,255,.20),inset 5px -9px 15px rgba(38,3,18,.31),4px 3px 0 #5c0f30,-3px 5px 0 #86204a !important;
+}
+.wax::before{inset:11px !important;border:2px solid rgba(255,218,229,.33) !important;box-shadow:inset 0 0 0 3px rgba(53,5,24,.20),0 0 0 1px rgba(75,9,34,.26) !important;}
+.wax::after{display:none !important;}
+.wax span{position:absolute !important;left:50% !important;top:43% !important;transform:translate(-50%,-50%) !important;font:700 1.9rem/1 Georgia,serif !important;color:#efbccd !important;text-shadow:0 -2px 1px rgba(49,5,22,.55),0 1px rgba(255,255,255,.13) !important;}
+.wax i{position:absolute;left:50%;top:68%;transform:translate(-50%,-50%);font-style:normal;font-size:.77rem;color:#eab3c6;text-shadow:0 -1px rgba(49,5,22,.6);}
+
+.gallery{
+  width:min(1180px,100%) !important;
+  display:grid !important;
+  grid-template-columns:repeat(12,minmax(0,1fr)) !important;
+  grid-auto-rows:78px !important;
+  grid-auto-flow:dense !important;
+  gap:14px !important;
+}
+.gallery-card{min-height:0 !important;padding:0 !important;border-radius:26px !important;overflow:hidden !important;background:#140a12 !important;border:1px solid rgba(255,255,255,.10) !important;box-shadow:0 18px 48px rgba(0,0,0,.22) !important;transform:none !important;}
+.gallery-card:nth-child(even){transform:none !important;}
+.gallery-shape-0{grid-column:span 5;grid-row:span 5;}
+.gallery-shape-1{grid-column:span 3;grid-row:span 4;}
+.gallery-shape-2{grid-column:span 4;grid-row:span 6;}
+.gallery-shape-3{grid-column:span 4;grid-row:span 4;}
+.gallery-shape-4{grid-column:span 3;grid-row:span 5;}
+.gallery-shape-5{grid-column:span 5;grid-row:span 4;}
+.gallery-shape-6{grid-column:span 4;grid-row:span 5;}
+.gallery-card img,.gallery-card video{width:100% !important;height:100% !important;min-height:100% !important;object-fit:cover !important;display:block !important;}
+.gallery-card img{transition:transform .55s ease,filter .55s ease !important;}
+.gallery-card:hover img{transform:scale(1.035) !important;filter:brightness(.92) !important;}
+.gallery-caption{display:none !important;}
+
+.crime-icon{min-height:38px;min-width:44px;display:grid;place-items:center;color:#d78396;font-size:2rem;font-weight:900;line-height:1;}
+.crime-icon-river{font-size:2.75rem;color:#77b8cc;}
+.crime-icon-disk{font-family:"Courier New",monospace;color:#b8d0c8;}
+.crime-icon-city{color:#c7a7b5;}
+.crime-car{position:relative;width:48px;height:31px;display:block;}
+.crime-car::before{content:"";position:absolute;left:3px;bottom:7px;width:42px;height:16px;border-radius:12px 13px 7px 7px;background:linear-gradient(180deg,#f6d65b,#d7ad2d);border:1px solid rgba(69,50,8,.55);}
+.crime-car::after{content:"";position:absolute;left:10px;bottom:18px;width:27px;height:12px;border-radius:15px 15px 3px 3px;background:#e8c442;border:1px solid rgba(69,50,8,.48);}
+.crime-car i::before,.crime-car i::after{content:"";position:absolute;bottom:2px;width:10px;height:10px;border-radius:50%;background:#161319;box-shadow:inset 0 0 0 3px #4f4850;}
+.crime-car i::before{left:8px;}.crime-car i::after{right:8px;}
+.crime-car b{position:absolute;z-index:2;left:17px;top:6px;width:14px;height:8px;border-radius:9px 9px 2px 2px;background:linear-gradient(135deg,#8fb4c5,#d8e6e8);border:1px solid rgba(48,67,75,.45);}
+
+.memory-dialog .dialog-inner.text-only{max-width:620px;padding:22px 8px 10px;text-align:center;}
+.memory-dialog .dialog-inner.text-only p{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.25rem,3.3vw,2rem);line-height:1.55;color:#fff2f7;}
+.constellation-shell::after{content:"17 corazones para alguien que se merece el universo ♡" !important;}
+
+.cake-top::before{content:"";position:absolute;z-index:3;left:-1px;right:-1px;top:-10px;height:28px;border-radius:50%;background:radial-gradient(ellipse at 50% 35%,#fffdfa 0 42%,#f6e4dd 68%,#dfc4c4 100%);border:1px solid rgba(111,61,77,.08);}
+.candles{width:51% !important;height:58px !important;bottom:406px !important;left:50% !important;transform:translateX(-50%) !important;display:block !important;}
+.candle-row{position:absolute !important;left:50% !important;display:flex !important;justify-content:space-between !important;align-items:flex-end !important;margin:0 !important;transform:translateX(-50%) !important;}
+.candle-row-top{width:88% !important;bottom:2px !important;z-index:1 !important;}
+.candle-row-bottom{width:100% !important;bottom:-4px !important;z-index:2 !important;}
+
+@media(max-width:760px){
+  .classified-seal{width:148px !important;height:148px !important;right:-30px !important;top:0 !important;opacity:.58 !important;}
+  .gallery{grid-template-columns:repeat(2,minmax(0,1fr)) !important;grid-auto-rows:210px !important;gap:10px !important;}
+  .gallery-card{grid-column:span 1 !important;grid-row:span 1 !important;border-radius:19px !important;}
+  .gallery-shape-0,.gallery-shape-3,.gallery-shape-6{grid-column:span 2 !important;}
+}
