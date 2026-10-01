@@ -133,14 +133,31 @@ const BIRTHDAY_CONFIG = {
       message: "Hola Anto, te deseo un muy feliz cumpleaños y q la pases hermoso hoy, te quiero mucho",
       pending: false
     },
-    { name: "Martina", message: "Antooo, te quiero muchísimo y me hace muy feliz tenerte en mi vida.
-Gracias por estar siempre y por ser una amiga tan increíble.
-Te quiero hoy, mañana y siempre.", pending: false },
-    { name: "Toty", message: "MENSAJE PENDIENTE", pending: true },
-    { name: "Cande", message: "MENSAJE PENDIENTE", pending: true },
-    { name: "Bruno", message: "MENSAJE PENDIENTE", pending: true },
-    { name: "Aye", message: "Hola bella, te deseo un muy feliz cumple, muchas gracias por todo lo que haces por mí (auqnue la mayoría de veces lo hagas inconscientemente ), no te lo digo muy seguido pero posta sos una persona que con pequeñas cosas me haces sentir mucho mejor en el día a día . Ej: estamos caminando, voy um poco atrás y me esperas o me haces hacia adelante, o aveces cuando hablo y no me escuchan haces una pausa para escucharme. Son cosas muy tontas pero que de verdad hacen la diferencia cuando estás teniendo un mal día o no te sentís muy bien, por eso te agradezco por ser esa persona que siempre está. Nuevamente feliz cumpleaños Anto
-Att: Ay", pending: false }
+    {
+      name: "Martina",
+      message: "Antooo, te quiero muchísimo y me hace muy feliz tenerte en mi vida. Gracias por estar siempre y por ser una amiga tan increíble. Te quiero hoy, mañana y siempre.",
+      pending: false
+    },
+    {
+      name: "Toty",
+      message: "feliiz cumple tototootonia!!! te amo mucho, incluso cuando comparas mis gustos con el holocausto. sos d las mejores cosas q me paso desde q empezo bachillerato. que el tiempo nos tenga así d juntas siempre. te amo 💗❤️‍🩹",
+      pending: false
+    },
+    {
+      name: "Cande",
+      message: "MENSAJE PENDIENTE",
+      pending: true
+    },
+    {
+      name: "Bruno",
+      message: "¡Feliz cumple, Antoo! 💗 Espero que tengas (o hayas tenido) un día hermoso y que disfrutes muchísimo tus 17🎉🎉 Me alegra haber compartido tantos momentos contigo. Te quiero un montón y espero que este nuevo año venga lleno de cosas lindas.🫶 >>🔞SOON",
+      pending: false
+    },
+    {
+      name: "Aye",
+      message: "Hola bella, te deseo un muy feliz cumple. Muchas gracias por todo lo que hacés por mí (aunque la mayoría de las veces lo hagas inconscientemente). No te lo digo muy seguido, pero posta sos una persona que con pequeñas cosas me hacés sentir mucho mejor en el día a día. Ej.: estamos caminando, voy un poco atrás y me esperás o me hacés ir hacia adelante; o a veces, cuando hablo y no me escuchan, hacés una pausa para escucharme. Son cosas muy tontas, pero que de verdad hacen la diferencia cuando estás teniendo un mal día o no te sentís muy bien. Por eso te agradezco por ser esa persona que siempre está. Nuevamente, feliz cumpleaños, Anto. Att: Aye",
+      pending: false
+    }
   ],
 
   receiptItems: [
