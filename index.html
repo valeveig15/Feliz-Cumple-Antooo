@@ -74,9 +74,12 @@
   </div>
 
   <audio id="bgMusic" loop preload="auto"></audio>
-  <div id="ytMusicDock" class="yt-music-dock" aria-label="Reproductor de Someone New de Hozier">
-    <div id="ytMusicPlayer"></div>
-    <div class="yt-music-caption"><strong>Someone New</strong><span>Hozier</span></div>
+  <div id="ytMusicDock" class="yt-music-dock" aria-label="Someone New de Hozier">
+    <div id="ytMusicPlayer" class="yt-music-player"></div>
+    <div class="yt-music-caption">
+      <span class="yt-note">♫</span>
+      <span><strong>Someone New</strong><small>Hozier</small></span>
+    </div>
   </div>
   <button id="musicBtn" class="floating-btn music-btn" aria-label="Pausar o reproducir música" title="Música">♫</button>
   <button id="topBtn" class="floating-btn top-btn" aria-label="Volver arriba" title="Volver arriba">↑</button>
@@ -268,7 +271,7 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <script src="https://www.youtube.com/iframe_api"></script>\n  <script src="config.js"></script>
+  <script src="config.js"></script>
   <script src="overrides.js"></script>
   <script src="script.js"></script>
 </body>
