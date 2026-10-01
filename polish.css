@@ -1539,3 +1539,630 @@ body::after{
     bottom:76px !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE PASS — pensado para celular de verdad
+   ========================================================= */
+@media (max-width: 760px){
+
+  html, body{
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden !important;
+  }
+
+  body{
+    background-attachment:scroll !important;
+  }
+
+  .section{
+    min-height:auto !important;
+    padding:76px 14px 72px !important;
+  }
+
+  .section-heading{
+    width:100% !important;
+    margin:0 auto 28px !important;
+    gap:9px !important;
+  }
+
+  .section-heading > span{
+    font-size:1rem !important;
+    padding-top:2px !important;
+  }
+
+  .section-heading h3{
+    font-size:clamp(2rem,11vw,3.25rem) !important;
+    line-height:.98 !important;
+    letter-spacing:-.045em !important;
+  }
+
+  .section-heading p{
+    font-size:.92rem !important;
+    line-height:1.5 !important;
+  }
+
+  /* ---------- acceso / expediente ---------- */
+  .opening{
+    padding:8px !important;
+    align-items:start !important;
+    overflow-y:auto !important;
+  }
+
+  .opening-card{
+    width:100% !important;
+    min-height:calc(100svh - 16px) !important;
+    padding:22px 14px 26px !important;
+    border-radius:24px !important;
+    overflow:hidden !important;
+  }
+
+  .opening h1{
+    font-size:clamp(3rem,18vw,4.8rem) !important;
+    line-height:.86 !important;
+    margin:.3em 0 .22em !important;
+  }
+
+  .countdown{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:8px !important;
+    margin-bottom:18px !important;
+  }
+
+  .countdown .unit{
+    padding:10px 6px !important;
+    border-radius:14px !important;
+  }
+
+  .countdown strong{
+    font-size:1.55rem !important;
+  }
+
+  .gate-warning{
+    margin:16px auto 17px !important;
+    padding:13px 14px !important;
+    border-radius:15px !important;
+  }
+
+  .gate-warning strong{font-size:.76rem !important;}
+  .gate-warning span{font-size:.84rem !important;}
+
+  #startGateBtn,
+  #openGiftBtn{
+    width:100% !important;
+    min-height:50px !important;
+    font-size:.95rem !important;
+  }
+
+  .micro-note{
+    font-size:.7rem !important;
+    margin-top:12px !important;
+  }
+
+  .classified-seal{
+    width:122px !important;
+    height:122px !important;
+    right:-30px !important;
+    top:-14px !important;
+    opacity:.42 !important;
+  }
+
+  .gate-topline{
+    gap:7px !important;
+    font-size:.57rem !important;
+    letter-spacing:.07em !important;
+  }
+
+  .gate-progress{
+    margin-bottom:18px !important;
+  }
+
+  .gate-stage-head{
+    grid-template-columns:40px 1fr !important;
+    gap:10px !important;
+    margin-bottom:16px !important;
+  }
+
+  .gate-stage-number{
+    width:38px !important;
+    height:38px !important;
+    font-size:.92rem !important;
+  }
+
+  .gate-eyebrow{
+    font-size:.58rem !important;
+    letter-spacing:.12em !important;
+  }
+
+  .gate-stage h2{
+    font-size:clamp(1.75rem,9vw,2.45rem) !important;
+    line-height:1 !important;
+  }
+
+  .gate-stage-head p{
+    font-size:.82rem !important;
+    line-height:1.45 !important;
+  }
+
+  .alias-board{
+    grid-template-columns:1fr !important;
+    gap:13px !important;
+  }
+
+  .alias-strings{display:none !important;}
+
+  .case-chip{
+    min-height:54px !important;
+    padding:10px 12px !important;
+    border-radius:14px !important;
+  }
+
+  .case-chip strong{
+    font-size:.9rem !important;
+  }
+
+  .case-chip small{
+    font-size:.58rem !important;
+  }
+
+  .trivia-question{
+    font-size:1rem !important;
+    line-height:1.45 !important;
+    padding:14px !important;
+  }
+
+  .trivia-options{
+    grid-template-columns:1fr !important;
+    gap:8px !important;
+  }
+
+  .trivia-option{
+    min-height:49px !important;
+    font-size:.88rem !important;
+  }
+
+  .chronology-grid,
+  .saga-grid{
+    grid-template-columns:1fr 1fr !important;
+    gap:8px !important;
+  }
+
+  .chronology-card,
+  .saga-card{
+    min-height:104px !important;
+    padding:12px 8px !important;
+  }
+
+  .crime-icon{
+    font-size:1.55rem !important;
+    transform:scale(.9);
+  }
+
+  .saga-card strong{
+    font-size:.76rem !important;
+    line-height:1.2 !important;
+  }
+
+  /* ---------- navegación ---------- */
+  .mini-nav{
+    width:calc(100% - 16px) !important;
+    max-width:none !important;
+    top:8px !important;
+    padding:5px !important;
+    overflow-x:auto !important;
+    justify-content:flex-start !important;
+    scrollbar-width:none;
+  }
+  .mini-nav::-webkit-scrollbar{display:none;}
+  .mini-nav a{
+    flex:0 0 auto;
+    padding:7px 10px !important;
+    font-size:.72rem !important;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:auto !important;
+    padding-top:92px !important;
+    padding-bottom:62px !important;
+  }
+
+  .hero-grid{
+    grid-template-columns:1fr !important;
+    gap:26px !important;
+    padding-top:0 !important;
+  }
+
+  .hero-copy{
+    text-align:center !important;
+  }
+
+  .hero-copy h2{
+    font-size:clamp(3.7rem,21vw,5.8rem) !important;
+    line-height:.81 !important;
+    margin:.2em 0 .3em !important;
+  }
+
+  .hero-line{
+    min-height:64px !important;
+    font-size:.98rem !important;
+    line-height:1.48 !important;
+    padding-inline:8px !important;
+  }
+
+  .hero-actions{
+    justify-content:center !important;
+    gap:8px !important;
+  }
+
+  .hero-actions .primary-btn,
+  .hero-actions .ghost-btn{
+    flex:1 1 100% !important;
+    width:100% !important;
+    min-height:48px !important;
+  }
+
+  .photo-stack{
+    width:100% !important;
+    height:470px !important;
+    min-height:470px !important;
+    margin:0 auto !important;
+  }
+
+  .photo-stack .p1{
+    left:0 !important;
+    top:5% !important;
+    width:43vw !important;
+  }
+  .photo-stack .p2{
+    right:0 !important;
+    top:9% !important;
+    width:43vw !important;
+  }
+  .photo-stack .p3{
+    left:50% !important;
+    top:34% !important;
+    width:58vw !important;
+    transform:translateX(-50%) rotate(1.5deg) !important;
+  }
+  .photo-stack .p4{
+    right:2% !important;
+    bottom:0 !important;
+    width:42vw !important;
+  }
+
+  .polaroid{
+    padding:7px 7px 18px !important;
+    border-radius:3px !important;
+  }
+
+  .polaroid img{
+    height:auto !important;
+    aspect-ratio:4/5 !important;
+    object-fit:cover !important;
+  }
+
+  /* ---------- sobre ---------- */
+  .paper-section{
+    padding-bottom:92px !important;
+  }
+
+  .envelope-wrap{
+    width:100% !important;
+    margin-top:26px !important;
+    gap:14px !important;
+  }
+
+  .envelope-wrap::before{
+    width:115vw !important;
+    height:260px !important;
+  }
+
+  .envelope{
+    width:min(94vw,430px) !important;
+    aspect-ratio:1.52 !important;
+    filter:drop-shadow(0 24px 26px rgba(65,20,39,.24)) !important;
+  }
+
+  .letter-preview{
+    width:82% !important;
+    left:9% !important;
+    top:14% !important;
+    height:75% !important;
+    padding:20px 20px !important;
+  }
+
+  .letter-preview strong{
+    font-size:clamp(2.05rem,11vw,3rem) !important;
+  }
+
+  .letter-preview > span:not(.letter-preview-small){
+    max-width:190px !important;
+    font-size:.72rem !important;
+  }
+
+  .letter-preview em{
+    font-size:1.05rem !important;
+  }
+
+  .wax{
+    width:64px !important;
+    height:64px !important;
+    top:45% !important;
+  }
+
+  .wax span{
+    font-size:1.42rem !important;
+  }
+
+  .wax i{
+    font-size:.62rem !important;
+  }
+
+  .envelope.open .letter-preview{
+    transform:translateY(-58%) scale(.98) !important;
+  }
+
+  .letter-card{
+    width:100% !important;
+    padding:24px 18px !important;
+    border-radius:18px !important;
+  }
+
+  .letter-card p{
+    font-size:.95rem !important;
+    line-height:1.7 !important;
+  }
+
+  /* ---------- mensajes ---------- */
+  .friend-grid{
+    grid-template-columns:1fr !important;
+    gap:11px !important;
+  }
+
+  .friend-card{
+    min-height:auto !important;
+    padding:19px 17px !important;
+    border-radius:20px !important;
+  }
+
+  .friend-card h4{
+    font-size:1.25rem !important;
+  }
+
+  .friend-card p{
+    font-size:.9rem !important;
+    line-height:1.56 !important;
+  }
+
+  /* ---------- galería ---------- */
+  .gallery{
+    column-count:2 !important;
+    column-gap:6px !important;
+  }
+
+  .gallery-card,
+  .gallery-video-card{
+    margin-bottom:6px !important;
+    border-radius:13px !important;
+  }
+
+  /* ---------- constelación ---------- */
+  .constellation-section{
+    padding-left:8px !important;
+    padding-right:8px !important;
+  }
+
+  .constellation-section .section-heading{
+    padding-inline:6px !important;
+  }
+
+  .constellation-shell{
+    width:100% !important;
+    height:600px !important;
+    min-height:600px !important;
+    border-radius:24px !important;
+  }
+
+  .heart-star{
+    font-size:25px !important;
+    min-width:38px;
+    min-height:38px;
+  }
+
+  .constellation-center{
+    width:68% !important;
+    padding:16px 12px !important;
+  }
+
+  .constellation-center strong{
+    font-size:2.15rem !important;
+  }
+
+  .constellation-center span{
+    font-size:.62rem !important;
+    line-height:1.45 !important;
+  }
+
+  .memory-dialog{
+    width:calc(100% - 18px) !important;
+    max-height:82svh !important;
+    border-radius:22px !important;
+  }
+
+  .dialog-inner{
+    padding:24px 18px !important;
+  }
+
+  .memory-dialog .dialog-inner.text-only p{
+    font-size:1.14rem !important;
+    line-height:1.5 !important;
+  }
+
+  /* ---------- torta ---------- */
+  .cake-stage{
+    grid-template-columns:1fr !important;
+    gap:16px !important;
+  }
+
+  .cake{
+    width:100% !important;
+    height:430px !important;
+    transform:scale(.82) !important;
+    transform-origin:center bottom !important;
+    margin:-30px 0 -58px !important;
+  }
+
+  .cake-controls{
+    width:100% !important;
+    margin:0 !important;
+    text-align:center !important;
+  }
+
+  .cake-controls .primary-btn,
+  .cake-controls .ghost-btn{
+    width:100% !important;
+    margin-top:7px !important;
+  }
+
+  .candles{
+    bottom:406px !important;
+    width:53% !important;
+  }
+
+  /* ---------- recibo ---------- */
+  .receipt{
+    width:100% !important;
+    padding:28px 17px 40px !important;
+  }
+
+  .receipt-item{
+    gap:7px !important;
+    font-size:.77rem !important;
+  }
+
+  .receipt-meta{
+    flex-direction:column !important;
+    gap:4px !important;
+  }
+
+  /* ---------- final ---------- */
+  .final-section{
+    min-height:70svh !important;
+  }
+
+  .final-card{
+    width:100% !important;
+    padding:34px 18px !important;
+    border-radius:28px !important;
+  }
+
+  .final-card h3{
+    font-size:clamp(2.7rem,14vw,4.5rem) !important;
+  }
+
+  /* ---------- botones flotantes ---------- */
+  .floating-btn{
+    width:44px !important;
+    height:44px !important;
+  }
+
+  .music-btn{
+    right:10px !important;
+    bottom:10px !important;
+  }
+
+  .top-btn{
+    right:10px !important;
+    bottom:62px !important;
+  }
+
+  .yt-music-dock{
+    right:60px !important;
+    bottom:8px !important;
+    width:176px !important;
+    min-height:46px !important;
+    padding:5px 9px 5px 6px !important;
+  }
+
+  .yt-note{
+    width:32px !important;
+    height:32px !important;
+  }
+
+  /* ---------- aurora ---------- */
+  .aurora-copy{
+    width:calc(100% - 28px) !important;
+    left:14px !important;
+    right:14px !important;
+    bottom:28px !important;
+  }
+
+  .aurora-copy h4{
+    font-size:clamp(2.15rem,11vw,3.4rem) !important;
+    line-height:.95 !important;
+  }
+
+  .aurora-copy p{
+    font-size:.88rem !important;
+    line-height:1.5 !important;
+  }
+
+  .aurora-close{
+    width:100% !important;
+  }
+}
+
+@media (max-width: 390px){
+  .section{
+    padding-left:11px !important;
+    padding-right:11px !important;
+  }
+
+  .opening-card{
+    padding-left:11px !important;
+    padding-right:11px !important;
+  }
+
+  .classified-seal{
+    width:104px !important;
+    height:104px !important;
+    right:-28px !important;
+  }
+
+  .opening h1{
+    font-size:3.15rem !important;
+  }
+
+  .photo-stack{
+    height:420px !important;
+    min-height:420px !important;
+  }
+
+  .gallery{
+    column-count:1 !important;
+  }
+
+  .constellation-shell{
+    height:560px !important;
+    min-height:560px !important;
+  }
+
+  .cake{
+    transform:scale(.74) !important;
+    margin:-44px 0 -78px !important;
+  }
+
+  .yt-music-dock{
+    width:154px !important;
+  }
+
+  .yt-music-caption strong{
+    font-size:.69rem !important;
+  }
+
+  .yt-music-caption small{
+    font-size:.58rem !important;
+  }
+}
