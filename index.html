@@ -16,12 +16,27 @@
   <div id="opening" class="opening" role="dialog" aria-modal="true" aria-labelledby="openingTitle">
     <div class="opening-card glass">
       <div class="classified-seal" aria-hidden="true">
-        <span class="seal-dot">• • •</span>
-        <div class="seal-core">
-          <strong>CONFIDENCIAL</strong>
-          <small>ARCHIVO 17 · SOLO ANTO</small>
-        </div>
-        <span class="seal-dot bottom">• • •</span>
+        <svg class="classified-stamp-svg" viewBox="0 0 220 220" role="img">
+          <defs>
+            <path id="stampTopPath" d="M 35 116 A 78 78 0 0 1 185 116"></path>
+            <path id="stampBottomPath" d="M 42 137 A 76 76 0 0 0 178 137"></path>
+            <filter id="stampRough" x="-15%" y="-15%" width="130%" height="130%">
+              <feTurbulence type="fractalNoise" baseFrequency=".028" numOctaves="2" seed="17" result="noise"></feTurbulence>
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.15"></feDisplacementMap>
+            </filter>
+          </defs>
+          <g filter="url(#stampRough)">
+            <circle class="stamp-ring stamp-ring-outer" cx="110" cy="110" r="91"></circle>
+            <circle class="stamp-ring stamp-ring-inner" cx="110" cy="110" r="80"></circle>
+            <circle class="stamp-dot" cx="42" cy="110" r="3"></circle>
+            <circle class="stamp-dot" cx="178" cy="110" r="3"></circle>
+            <text class="stamp-arc-text"><textPath href="#stampTopPath" startOffset="50%" text-anchor="middle">CONFIDENCIAL</textPath></text>
+            <text class="stamp-arc-text stamp-arc-small"><textPath href="#stampBottomPath" startOffset="50%" text-anchor="middle">ARCHIVO 17</textPath></text>
+            <rect class="stamp-band" x="38" y="86" width="144" height="47" rx="3"></rect>
+            <text class="stamp-main" x="110" y="106" text-anchor="middle">SOLO</text>
+            <text class="stamp-main stamp-main-anto" x="110" y="126" text-anchor="middle">ANTO</text>
+          </g>
+        </svg>
       </div>
 
       <div id="gateIntro" class="gate-view">
@@ -83,10 +98,10 @@
       </div>
 
       <div class="photo-stack reveal" aria-label="Fotos de Anto y amigas">
-        <figure class="polaroid p1"><img src="assets/photos/anto-portrait-1.jpeg" alt="Foto de Anto"><figcaption>anto_01.jpg</figcaption></figure>
-        <figure class="polaroid p2"><img src="assets/photos/amigas-espejo.jpeg" alt="Foto de amigas frente a un espejo"><figcaption>gente_linda.jpg</figcaption></figure>
-        <figure class="polaroid p3"><img src="assets/photos/anto-portrait-2.jpeg" alt="Foto de Anto sonriendo"><figcaption>tirana.exe</figcaption></figure>
-        <figure class="polaroid p4"><img src="assets/photos/amigas-casa.jpeg" alt="Foto de amigas juntas"><figcaption>archivo_feliz.jpg</figcaption></figure>
+        <figure class="polaroid p1"><img src="assets/photos/amigas-espejo.jpeg" alt="Anto con amigas"></figure>
+        <figure class="polaroid p2"><img src="assets/photos/anto-portrait-1.jpeg" alt="Foto de Anto"></figure>
+        <figure class="polaroid p3"><img src="assets/photos/anto-portrait-2.jpeg" alt="Anto sonriendo"></figure>
+        <figure class="polaroid p4"><img src="assets/photos/amigas-casa.jpeg" alt="Anto con amigas"></figure>
       </div>
     </div>
 
@@ -119,7 +134,7 @@
           <div class="postmark">01 OCT<br>2026</div>
           <div class="envelope-front"></div>
           <div class="envelope-flap"></div>
-          <div class="wax"><span>V</span></div>
+          <div class="wax" aria-hidden="true"><span>V</span><i>♥</i></div>
         </button>
         <p class="tap-hint">tocá el sobre</p>
       </div>
@@ -132,7 +147,7 @@
         <span>02</span>
         <div>
           <div class="tiny-kicker">NO SOLO YO TENÍA COSAS PARA DECIR</div>
-          <h3>Mensajes de tu gente</h3>
+          <h3>Mensajes de tus amigos</h3>
         </div>
       </div>
       <div id="friendGrid" class="friend-grid"></div>
@@ -143,7 +158,7 @@
         <span>03</span>
         <div>
           <div class="tiny-kicker">ARCHIVO VISUAL</div>
-          <h3>Fotos que quería guardar acá</h3>
+          <h3>Fotos de la chica del momento</h3>
         </div>
       </div>
       <div id="gallery" class="gallery"></div>
@@ -155,7 +170,7 @@
         <div>
           <div class="tiny-kicker">UN PEDACITO DE NUESTRA HISTORIA</div>
           <h3>Constelación de corazones</h3>
-          <p>Cada corazón guarda un deseo, un recuerdo o una foto. Tocá todos.</p>
+          <p>17 corazones porque sos increíble y te merecés el universo entero. Tocá todos.</p>
         </div>
       </div>
       <div class="constellation-shell reveal">
@@ -224,8 +239,8 @@
     <section class="section final-section" id="final">
       <div class="final-card reveal">
         <div class="tiny-kicker">FIN DEL RECORRIDO, NO DEL CONTRATO</div>
-        <h3>Feliz capítulo 17, Anto.</h3>
-        <p>Te quiero muchísimo. — Valen ❤️</p>
+        <h3>Feliz cumpleaños, Anto.</h3>
+        <p>Te quiero muchísimo.</p>
         <button id="replayBtn" class="primary-btn" type="button">Lluvia de corazones otra vez</button>
       </div>
     </section>
