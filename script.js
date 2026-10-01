@@ -62,15 +62,109 @@
   music.src = C.song;
   music.volume = 0.38;
 
+  // El MP3 que quedó en GitHub está vacío. Para que la música funcione
+  // de forma confiable usamos como fuente de respaldo la publicación oficial
+  // de "Someone New" de Hozier en YouTube.
+  const YT_MUSIC_ID = "QUnF1Vuon2s";
+  const FORCE_YOUTUBE_MUSIC = true;
+  const ytDock = $("#ytMusicDock");
+  let ytPlayer = null;
+  let ytReady = false;
+  let ytPlayRequested = false;
+  let musicPlaying = false;
+
+  function setMusicButton(playing) {
+    musicPlaying = playing;
+    $("#musicBtn").classList.toggle("paused", !playing);
+    $("#musicBtn").textContent = playing ? "♫" : "♪";
+  }
+
+  function revealYouTubeDock() {
+    if (ytDock) ytDock.classList.add("show");
+  }
+
+  function hideYouTubeDock() {
+    if (ytDock) ytDock.classList.remove("show");
+  }
+
+  function createYouTubePlayer() {
+    if (!window.YT?.Player || ytPlayer) return;
+    ytPlayer = new YT.Player("ytMusicPlayer", {
+      width: "240",
+      height: "135",
+      videoId: YT_MUSIC_ID,
+      playerVars: {
+        autoplay: 0,
+        controls: 1,
+        rel: 0,
+        playsinline: 1,
+        loop: 1,
+        playlist: YT_MUSIC_ID
+      },
+      events: {
+        onReady: () => {
+          ytReady = true;
+          if (ytPlayRequested) {
+            ytPlayRequested = false;
+            playYouTubeMusic();
+          }
+        },
+        onStateChange: (event) => {
+          if (!window.YT) return;
+          if (event.data === YT.PlayerState.PLAYING) setMusicButton(true);
+          if (event.data === YT.PlayerState.PAUSED) setMusicButton(false);
+        }
+      }
+    });
+  }
+
+  const previousYTReady = window.onYouTubeIframeAPIReady;
+  window.onYouTubeIframeAPIReady = () => {
+    if (typeof previousYTReady === "function") previousYTReady();
+    createYouTubePlayer();
+  };
+  if (window.YT?.Player) createYouTubePlayer();
+
+  function playYouTubeMusic() {
+    revealYouTubeDock();
+    if (!ytReady || !ytPlayer) {
+      ytPlayRequested = true;
+      setMusicButton(false);
+      return;
+    }
+    try {
+      ytPlayer.playVideo();
+      setMusicButton(true);
+      state.musicStarted = true;
+    } catch (error) {
+      console.warn("YouTube todavía no estaba listo.", error);
+      ytPlayRequested = true;
+      setMusicButton(false);
+    }
+  }
+
+  function pauseMusic() {
+    if (ytPlayer && ytReady) {
+      try { ytPlayer.pauseVideo(); } catch {}
+    }
+    music.pause();
+    setMusicButton(false);
+  }
+
   async function startMusic() {
+    if (FORCE_YOUTUBE_MUSIC) {
+      playYouTubeMusic();
+      return;
+    }
+
     try {
       await music.play();
       state.musicStarted = true;
-      $("#musicBtn").classList.remove("paused");
-      $("#musicBtn").textContent = "♫";
-    } catch {
-      $("#musicBtn").classList.add("paused");
-      $("#musicBtn").textContent = "♪";
+      hideYouTubeDock();
+      setMusicButton(true);
+    } catch (error) {
+      console.warn("El MP3 local no pudo reproducirse; uso YouTube.", error);
+      playYouTubeMusic();
     }
   }
 
@@ -369,13 +463,11 @@
   });
 
   $("#musicBtn").addEventListener("click", async () => {
-    if (music.paused) {
+    if (!musicPlaying) {
       await startMusic();
       toast("Música: ON 🎵");
     } else {
-      music.pause();
-      $("#musicBtn").classList.add("paused");
-      $("#musicBtn").textContent = "♪";
+      pauseMusic();
       toast("Música: pausa");
     }
   });
