@@ -12,18 +12,18 @@
   BIRTHDAY_CONFIG.letter = [
     "Anto:",
     "Feliz cumple, bella. Claramente no me alcanzaba con mandarte un \"feliz cumple\" y listo, así que terminé haciendo todo esto para vos.",
-    "No sé si te digo lo suficiente lo importante que sos para mí. Muchas veces estamos demasiado ocupadas hablando de cualquier estupidez, mandándonos audios eternos o pasando de un tema serio a otro que no tiene absolutamente nada que ver como para frenar y decir estas cosas. Así que hoy no te escapás.",
+    "No sé si te digo lo suficiente lo importante que sos para mí. Creo que muchas veces estamos demasiado ocupadas hablando de cualquier estupidez, mandándonos audios eternos o pasando de un tema serio a otro que no tiene absolutamente nada que ver como para frenar y decir estas cosas. Así que hoy no te escapás.",
     "Uno de mis recuerdos favoritos con vos siempre va a ser cuando fuimos unos días a lo de mis abuelos y decidiste que yo TENÍA que mirar toda la saga de Crepúsculo. Yo estaba convencida de que iba a morir del cringe y del aburrimiento y, de alguna manera, terminé disfrutándola justamente de tanto cringe. Ahora cada vez que aparece algo de esa saga me acuerdo de esos días juntas y me da muchísimo cariño.",
     "También amo tus audios mortales de cinco minutos mínimo. Siempre arrancás hablando de una cosa y, para cuando terminás, ya pasaste por tres temas, dos indignaciones y probablemente un plan bastante elaborado contra tu enemigo del momento. Por favor nunca aprendas a resumir porque, honestamente, pocas cosas me hacen reír tanto de la nada.",
     "Y sí, sos una grandiosa tirana. Tenés una capacidad preocupante para convencerme de cosas y después actuar como si todo hubiera sido idea mía. Es insoportable. Te quiero igual.",
-    "Pero fuera de las jodas, sos una amiga increíble. Sos honesta conmigo, estás cuando importa y hacés que hasta los días más normales terminen convirtiéndose en recuerdos que quiero guardar.",
-    "Hace mucho tiempo me dijiste: “Cualquier cosa estoy para vos siempre”. Capaz para vos fue una frase más dentro de una conversación, pero yo me la acordé.",
-    "Y desde ese día hay algo que tengo clarísimo: no sé cómo habría sido mi vida si no nos hubiéramos conocido, y tampoco quiero saberlo. Me alegra demasiado que nos hayamos encontrado, que nos hayamos hecho amigas y que yo haya tenido el honor de darte vergüenza tantas veces.",
+    "Pero fuera de las jodas, sos una amiga increíble. Sos honesta conmigo, estás cuando importa y hacés que hasta los días más normales terminen convirtiéndose en recuerdos que quiero guardar. Y creo que eso es de las cosas que más quiero de nuestra amistad: no hace falta que pase algo enorme para que estar con vos ya haga que el día sea un poquito mejor.",
+    "Hace mucho tiempo me dijiste: “Cualquier cosa estoy para vos siempre”. Capaz para vos fue una frase más dentro de una conversación, pero yo me la acordé. Me la acordé porque me hizo sentir querida, y porque viniendo de vos significó muchísimo.",
+    "Y desde ese día hay algo que tengo clarísimo: me cuesta imaginar mi vida sin haberte conocido. Me alegra demasiado que nos hayamos encontrado, que nos hayamos hecho amigas y que yo haya tenido el honor de darte vergüenza tantas veces.",
     "De mi lado es exactamente igual. Estoy para vos cuando lo necesites y para lo que necesites. Para escucharte, para reírnos, para bancarte cuando estés hecha mierda, para festejarte cuando estés feliz y también para esos días en los que ni siquiera sabés qué decir.",
     "Espero que tus 17 estén llenos de gente que te quiera bien, momentos que quieras guardar, cosas nuevas que te entusiasmen y muchísimas razones para reírte.",
     "Y espero que dentro de muchos años, cuando pensemos en esta etapa, haya un montón de recuerdos en los que sigamos apareciendo juntas. Me hace muy feliz que una parte de mi vida hasta acá tenga tanto de vos adentro.",
-    "Ojalá hoy puedas verte aunque sea un poquito como te vemos los que te queremos. Sos muchísimo más importante de lo que probablemente te dicen todos los días.",
-    "Te quiero muchísimo, Anto. Feliz 17, bella. ❤️",
+    "Ojalá hoy puedas verte aunque sea un poquito como te vemos los que te queremos. Porque a veces una no se da cuenta del lugar que ocupa en la vida de los demás, y vos ocupás uno enorme en la mía.",
+    "Gracias por estar, por hacerme reír, por bancarme y por ser vos. Te quiero muchísimo, Anto. Feliz 17, bella. ❤️",
     "— Valen"
   ];
 
@@ -45,7 +45,7 @@
       message: "¡Feliz cumple, Antoo! 💗 Espero que tengas (o hayas tenido) un día hermoso y que disfrutes muchísimo tus 17🎉🎉 Me alegra haber compartido tantos momentos contigo. Te quiero un montón y espero que este nuevo año venga lleno de cosas lindas.🫶 >>🔞SOON",
       pending: false
     },
-    { name: "Martina", message: "MENSAJE PENDIENTE", pending: true },
+    { name: "Martina", message: "Antooo, te quiero muchísimo y me hace muy feliz tenerte en mi vida. Gracias por estar siempre y por ser una amiga tan increíble. Te quiero hoy, mañana y siempre.", pending: false },
     { name: "Cande", message: "MENSAJE PENDIENTE", pending: true }
   ];
 
