@@ -1,3 +1,4 @@
+window.__birthdayBooted = true;
 (() => {
   "use strict";
 
