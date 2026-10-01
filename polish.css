@@ -2326,3 +2326,260 @@ body::after{
     font-size:.58rem !important;
   }
 }
+
+
+/* =========================================================
+   SOBRE FINAL — papel de carta premium, bordó cereza
+   ========================================================= */
+.envelope-wrap{
+  position:relative !important;
+  isolation:isolate !important;
+  margin-top:54px !important;
+}
+
+.envelope-wrap::before{
+  width:min(780px,98vw) !important;
+  height:380px !important;
+  background:
+    radial-gradient(ellipse at 50% 48%,rgba(120,24,60,.17),transparent 58%),
+    radial-gradient(ellipse at 50% 66%,rgba(88,198,186,.055),transparent 65%) !important;
+  filter:blur(28px) !important;
+}
+
+.envelope{
+  width:min(640px,95vw) !important;
+  aspect-ratio:1.72 !important;
+  border-radius:20px !important;
+  perspective:1800px !important;
+  filter:
+    drop-shadow(0 38px 38px rgba(73,18,41,.22))
+    drop-shadow(0 9px 12px rgba(58,12,30,.13)) !important;
+}
+
+/* cuerpo exterior */
+.envelope-back{
+  border-radius:20px !important;
+  overflow:hidden !important;
+  background:
+    radial-gradient(420px 230px at 22% 9%,rgba(255,255,255,.14),transparent 60%),
+    repeating-linear-gradient(14deg,rgba(255,255,255,.017) 0 1px,transparent 1px 5px),
+    repeating-linear-gradient(96deg,rgba(31,3,15,.018) 0 1px,transparent 1px 8px),
+    linear-gradient(145deg,#a52d5c 0%,#84204a 38%,#6c153b 67%,#51102d 100%) !important;
+  border:1px solid rgba(66,8,32,.55) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.13),
+    inset 0 -28px 52px rgba(33,3,16,.22),
+    inset 0 0 0 1px rgba(255,255,255,.035) !important;
+}
+
+/* borde interior del sobre */
+.envelope-back::after{
+  inset:8px !important;
+  border-radius:15px !important;
+  border:1px solid rgba(255,255,255,.055) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(48,6,24,.08),
+    inset 0 0 28px rgba(32,3,15,.06) !important;
+}
+
+/* forro: verde agua suave con patrón mínimo */
+.envelope-lining{
+  left:2.4% !important;
+  right:2.4% !important;
+  top:2.3% !important;
+  height:70.5% !important;
+  clip-path:polygon(0 0,100% 0,50% 95%) !important;
+  background:
+    radial-gradient(circle at 14px 14px,rgba(255,255,255,.52) 0 1.1px,transparent 1.7px) 0 0/29px 29px,
+    radial-gradient(circle at 0 0,rgba(132,25,67,.18) 0 1.7px,transparent 2.4px) 14.5px 14.5px/29px 29px,
+    linear-gradient(135deg,#bcefe7 0%,#8ddbd0 48%,#61b8b2 100%) !important;
+  box-shadow:
+    inset 0 -24px 34px rgba(18,74,73,.12),
+    inset 0 2px 0 rgba(255,255,255,.20) !important;
+}
+
+/* solapa */
+.envelope-flap{
+  z-index:6 !important;
+  clip-path:polygon(0 0,100% 0,50% 70%) !important;
+  border-radius:20px !important;
+  background:
+    radial-gradient(330px 180px at 25% 4%,rgba(255,255,255,.13),transparent 60%),
+    repeating-linear-gradient(15deg,rgba(255,255,255,.013) 0 1px,transparent 1px 5px),
+    linear-gradient(160deg,#ad3262 0%,#85214b 56%,#631438 100%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.13),
+    inset 0 -18px 27px rgba(42,4,20,.09),
+    0 3px 5px rgba(40,4,18,.12) !important;
+}
+.envelope-flap::before{
+  left:5% !important;
+  right:5% !important;
+  top:1px !important;
+  height:1px !important;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.24) 15% 85%,transparent) !important;
+}
+.envelope-flap::after{
+  inset:2.2% !important;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.055),transparent 44%),
+    linear-gradient(135deg,transparent 49%,rgba(44,5,21,.065) 50%,transparent 51%) !important;
+}
+
+/* frente con costuras/pliegues limpios */
+.envelope-front{
+  z-index:4 !important;
+  clip-path:polygon(0 27%,50% 70%,100% 27%,100% 100%,0 100%) !important;
+  border-radius:20px !important;
+  background:
+    radial-gradient(330px 200px at 15% 2%,rgba(255,255,255,.09),transparent 60%),
+    repeating-linear-gradient(16deg,rgba(255,255,255,.012) 0 1px,transparent 1px 5px),
+    linear-gradient(165deg,#9d2855 0%,#7d1d46 54%,#611337 100%) !important;
+  border:1px solid rgba(62,7,29,.43) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    inset 0 -27px 38px rgba(31,3,15,.17),
+    0 -1px 0 rgba(45,5,21,.16) !important;
+}
+.envelope-front::before{
+  left:0 !important;
+  bottom:0 !important;
+  width:52% !important;
+  height:70% !important;
+  opacity:.75 !important;
+  background:
+    linear-gradient(35deg,rgba(39,4,18,.23),rgba(255,255,255,.018) 49%,transparent 51%) !important;
+  clip-path:polygon(0 0,100% 62%,100% 100%,0 100%) !important;
+}
+.envelope-front::after{
+  right:0 !important;
+  bottom:0 !important;
+  width:52% !important;
+  height:70% !important;
+  opacity:.75 !important;
+  background:
+    linear-gradient(-35deg,rgba(39,4,18,.21),rgba(255,255,255,.018) 49%,transparent 51%) !important;
+  clip-path:polygon(100% 0,0 62%,0 100%,100% 100%) !important;
+}
+
+/* tarjeta interior */
+.letter-preview{
+  z-index:3 !important;
+  width:84% !important;
+  left:8% !important;
+  top:13% !important;
+  height:77% !important;
+  padding:31px 35px !important;
+  border-radius:7px !important;
+  background:
+    radial-gradient(360px 230px at 20% 8%,rgba(255,255,255,.82),transparent 64%),
+    repeating-linear-gradient(0deg,rgba(93,62,45,.020) 0 1px,transparent 1px 5px),
+    linear-gradient(145deg,#fffdf8 0%,#fbf4ea 58%,#f4e6d8 100%) !important;
+  box-shadow:
+    0 16px 32px rgba(42,7,23,.21),
+    inset 0 0 0 1px rgba(104,62,75,.09),
+    inset 0 1px 0 rgba(255,255,255,.92) !important;
+}
+.letter-preview::before{
+  inset:11px !important;
+  border:1px solid rgba(126,28,64,.14) !important;
+  border-radius:3px !important;
+}
+.letter-preview-small{
+  color:#876673 !important;
+}
+.letter-preview strong{
+  color:#78173e !important;
+  text-shadow:0 1px rgba(255,255,255,.7) !important;
+}
+.letter-preview em{
+  color:#a22d59 !important;
+}
+
+/* sello de cera limpio, sin parecer un botón */
+.wax{
+  z-index:8 !important;
+  width:84px !important;
+  height:84px !important;
+  top:44.4% !important;
+  border-radius:48% 55% 46% 57% / 54% 47% 58% 45% !important;
+  background:
+    radial-gradient(circle at 30% 22%,rgba(255,220,232,.48) 0 4%,transparent 5%),
+    radial-gradient(circle at 37% 31%,#d45480 0 8%,#ad2c5d 25%,#77173f 60%,#4d0a29 100%) !important;
+  box-shadow:
+    0 13px 20px rgba(48,5,24,.37),
+    inset 0 4px 5px rgba(255,255,255,.18),
+    inset 5px -9px 14px rgba(38,2,18,.31),
+    3px 3px 0 #601132,
+    -2px 4px 0 #872049 !important;
+}
+.wax::before{
+  inset:10px !important;
+  border:2px solid rgba(255,220,230,.30) !important;
+  box-shadow:
+    inset 0 0 0 3px rgba(52,5,23,.17),
+    0 0 0 1px rgba(61,7,27,.27) !important;
+}
+.wax::after{
+  content:"" !important;
+  display:none !important;
+}
+.wax span{
+  top:44% !important;
+  font-size:1.9rem !important;
+  color:#f0bdce !important;
+}
+.wax i{
+  top:69% !important;
+  font-size:.75rem !important;
+  color:#eeb8ca !important;
+}
+
+/* apertura más elegante */
+.envelope.open{
+  transform:translateY(2px) !important;
+}
+.envelope.open .envelope-flap{
+  transform:rotateX(180deg) !important;
+  z-index:1 !important;
+  filter:brightness(.86) saturate(.95) !important;
+}
+.envelope.open .letter-preview{
+  transform:translateY(-66%) rotateX(.7deg) scale(1.01) !important;
+  box-shadow:
+    0 34px 66px rgba(55,13,32,.25),
+    inset 0 0 0 1px rgba(104,62,75,.09),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+.envelope.open .wax{
+  opacity:0 !important;
+  transform:translate(-50%,-50%) scale(.7) rotate(7deg) !important;
+}
+
+/* Mientras corre la aurora, sacamos elementos innecesarios de encima. */
+body.aurora-open .floating-btn,
+body.aurora-open .yt-music-dock{
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+@media(max-width:760px){
+  .envelope{
+    width:min(94vw,455px) !important;
+    aspect-ratio:1.58 !important;
+  }
+  .letter-preview{
+    width:82% !important;
+    left:9% !important;
+    top:13.5% !important;
+    height:76% !important;
+    padding:20px 20px !important;
+  }
+  .wax{
+    width:62px !important;
+    height:62px !important;
+  }
+  .envelope.open .letter-preview{
+    transform:translateY(-56%) scale(.985) !important;
+  }
+}
