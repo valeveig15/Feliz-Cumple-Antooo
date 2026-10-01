@@ -62,110 +62,62 @@
   music.src = C.song;
   music.volume = 0.38;
 
-  // El MP3 que quedó en GitHub está vacío. Para que la música funcione
-  // de forma confiable usamos como fuente de respaldo la publicación oficial
-  // de "Someone New" de Hozier en YouTube.
-  const YT_MUSIC_ID = "QUnF1Vuon2s";
-  const FORCE_YOUTUBE_MUSIC = true;
+  // El MP3 del repo quedó dañado. La fuente estable es el video oficial
+  // de Hozier. El iframe se crea EN el click del usuario para que Chrome
+  // permita sonido desde el primer momento.
+  const YT_MUSIC_ID = "bPJSsAr2iu0";
   const ytDock = $("#ytMusicDock");
-  let ytPlayer = null;
-  let ytReady = false;
-  let ytPlayRequested = false;
+  const ytMount = $("#ytMusicPlayer");
+  let ytFrame = null;
   let musicPlaying = false;
 
   function setMusicButton(playing) {
     musicPlaying = playing;
     $("#musicBtn").classList.toggle("paused", !playing);
     $("#musicBtn").textContent = playing ? "♫" : "♪";
+    $("#musicBtn").setAttribute("aria-label", playing ? "Pausar música" : "Reproducir música");
   }
 
-  function revealYouTubeDock() {
-    if (ytDock) ytDock.classList.add("show");
+  function sendYTCommand(func) {
+    if (!ytFrame?.contentWindow) return;
+    ytFrame.contentWindow.postMessage(JSON.stringify({
+      event: "command",
+      func,
+      args: []
+    }), "*");
   }
 
-  function hideYouTubeDock() {
-    if (ytDock) ytDock.classList.remove("show");
-  }
-
-  function createYouTubePlayer() {
-    if (!window.YT?.Player || ytPlayer) return;
-    ytPlayer = new YT.Player("ytMusicPlayer", {
-      width: "240",
-      height: "135",
-      videoId: YT_MUSIC_ID,
-      playerVars: {
-        autoplay: 0,
-        controls: 1,
-        rel: 0,
-        playsinline: 1,
-        loop: 1,
-        playlist: YT_MUSIC_ID
-      },
-      events: {
-        onReady: () => {
-          ytReady = true;
-          if (ytPlayRequested) {
-            ytPlayRequested = false;
-            playYouTubeMusic();
-          }
-        },
-        onStateChange: (event) => {
-          if (!window.YT) return;
-          if (event.data === YT.PlayerState.PLAYING) setMusicButton(true);
-          if (event.data === YT.PlayerState.PAUSED) setMusicButton(false);
-        }
-      }
-    });
-  }
-
-  const previousYTReady = window.onYouTubeIframeAPIReady;
-  window.onYouTubeIframeAPIReady = () => {
-    if (typeof previousYTReady === "function") previousYTReady();
-    createYouTubePlayer();
-  };
-  if (window.YT?.Player) createYouTubePlayer();
-
-  function playYouTubeMusic() {
-    revealYouTubeDock();
-    if (!ytReady || !ytPlayer) {
-      ytPlayRequested = true;
-      setMusicButton(false);
-      return;
+  function createAndPlayYouTube() {
+    if (!ytFrame) {
+      const frame = document.createElement("iframe");
+      frame.title = "Someone New — Hozier";
+      frame.allow = "autoplay; encrypted-media; picture-in-picture";
+      frame.referrerPolicy = "strict-origin-when-cross-origin";
+      frame.setAttribute("allowfullscreen", "");
+      frame.src =
+        "https://www.youtube.com/embed/" + YT_MUSIC_ID +
+        "?autoplay=1&loop=1&playlist=" + YT_MUSIC_ID +
+        "&controls=0&playsinline=1&enablejsapi=1&rel=0&modestbranding=1";
+      ytMount.replaceChildren(frame);
+      ytFrame = frame;
+    } else {
+      sendYTCommand("playVideo");
     }
-    try {
-      ytPlayer.playVideo();
-      setMusicButton(true);
-      state.musicStarted = true;
-    } catch (error) {
-      console.warn("YouTube todavía no estaba listo.", error);
-      ytPlayRequested = true;
-      setMusicButton(false);
-    }
+
+    ytDock.classList.add("show");
+    state.musicStarted = true;
+    setMusicButton(true);
   }
 
   function pauseMusic() {
-    if (ytPlayer && ytReady) {
-      try { ytPlayer.pauseVideo(); } catch {}
-    }
-    music.pause();
+    sendYTCommand("pauseVideo");
+    try { music.pause(); } catch {}
     setMusicButton(false);
   }
 
-  async function startMusic() {
-    if (FORCE_YOUTUBE_MUSIC) {
-      playYouTubeMusic();
-      return;
-    }
-
-    try {
-      await music.play();
-      state.musicStarted = true;
-      hideYouTubeDock();
-      setMusicButton(true);
-    } catch (error) {
-      console.warn("El MP3 local no pudo reproducirse; uso YouTube.", error);
-      playYouTubeMusic();
-    }
+  function startMusic() {
+    // Debe ejecutarse dentro de un click/tap; así el navegador autoriza audio.
+    createAndPlayYouTube();
   }
 
   const gateState = {
@@ -462,9 +414,9 @@
     setTimeout(() => $("#inicio").scrollIntoView({ behavior: "smooth" }), 300);
   });
 
-  $("#musicBtn").addEventListener("click", async () => {
+  $("#musicBtn").addEventListener("click", () => {
     if (!musicPlaying) {
-      await startMusic();
+      startMusic();
       toast("Música: ON 🎵");
     } else {
       pauseMusic();
@@ -806,13 +758,91 @@
     auroraSize = { w, h, dpr };
 
     const rng = mulberry32(170117);
-    auroraStars = Array.from({ length: Math.min(240, Math.floor(w * h / 6000)) }, () => ({
+    auroraStars = Array.from({ length: Math.min(320, Math.floor(w * h / 4300)) }, () => ({
       x: rng() * w,
-      y: rng() * h * .74,
-      r: .35 + rng() * 1.2,
-      a: .22 + rng() * .72,
-      tw: rng() * Math.PI * 2
+      y: rng() * h * .76,
+      r: .25 + rng() * 1.25,
+      a: .18 + rng() * .72,
+      tw: rng() * Math.PI * 2,
+      sp: .35 + rng() * .9
     }));
+  }
+
+  function auroraWave(x, w, t, layer) {
+    const nx = x / Math.max(1, w);
+    return (
+      Math.sin(nx * (4.4 + layer * .65) + t * (.13 + layer * .018) + layer * 1.7) * .54 +
+      Math.sin(nx * (10.5 + layer) - t * (.085 + layer * .012) + layer * .9) * .27 +
+      Math.sin(nx * 2.15 + t * .055 + layer * 2.4) * .19
+    );
+  }
+
+  function drawAuroraCurtain(ctx, cfg, t, w, h) {
+    const step = Math.max(4, Math.round(w / 245));
+    const baseY = h * cfg.y;
+    const amp = h * cfg.amp;
+
+    ctx.save();
+    ctx.globalCompositeOperation = "screen";
+
+    // broad luminous body
+    ctx.filter = `blur(${Math.max(8, h * .013)}px)`;
+    for (let x = -step; x <= w + step; x += step) {
+      const n = auroraWave(x, w, t * cfg.speed, cfg.layer);
+      const y = baseY + n * amp;
+      const shimmer = .45 + .55 * Math.sin(x * .035 + t * .72 + cfg.layer);
+      const height = h * (cfg.depth + .04 * shimmer);
+      const top = y - height * .15;
+      const bottom = y + height;
+
+      const g = ctx.createLinearGradient(0, top, 0, bottom);
+      const [r,gc,b] = cfg.color;
+      g.addColorStop(0, `rgba(${r},${gc},${b},0)`);
+      g.addColorStop(.18, `rgba(${r},${gc},${b},${cfg.alpha * .72})`);
+      g.addColorStop(.48, `rgba(${r},${gc},${b},${cfg.alpha})`);
+      g.addColorStop(.78, `rgba(${r},${gc},${b},${cfg.alpha * .22})`);
+      g.addColorStop(1, `rgba(${r},${gc},${b},0)`);
+
+      ctx.strokeStyle = g;
+      ctx.lineWidth = step * 1.45;
+      ctx.beginPath();
+      ctx.moveTo(x, top);
+      ctx.quadraticCurveTo(x + Math.sin(t + x * .02) * 5, y + height * .42, x, bottom);
+      ctx.stroke();
+    }
+
+    // crisp inner folds
+    ctx.filter = "blur(1.2px)";
+    for (let x = 0; x <= w; x += step * 2) {
+      const n = auroraWave(x, w, t * cfg.speed, cfg.layer);
+      const y = baseY + n * amp;
+      const fold = .5 + .5 * Math.sin(x * .058 + t * .96 + cfg.layer * 2.2);
+      const height = h * (cfg.depth * (.55 + fold * .42));
+      const [r,gc,b] = cfg.color;
+      const g = ctx.createLinearGradient(0, y, 0, y + height);
+      g.addColorStop(0, `rgba(${Math.min(255,r+42)},${Math.min(255,gc+28)},${Math.min(255,b+30)},${cfg.alpha * .9})`);
+      g.addColorStop(.45, `rgba(${r},${gc},${b},${cfg.alpha * .25})`);
+      g.addColorStop(1, `rgba(${r},${gc},${b},0)`);
+      ctx.strokeStyle = g;
+      ctx.lineWidth = Math.max(1, step * .44);
+      ctx.beginPath();
+      ctx.moveTo(x, y - h * .006);
+      ctx.lineTo(x + Math.sin(t * .7 + x * .015) * 5, y + height);
+      ctx.stroke();
+    }
+
+    ctx.restore();
+  }
+
+  function drawMountainLayer(ctx, pts, fill, w, h) {
+    ctx.fillStyle = fill;
+    ctx.beginPath();
+    ctx.moveTo(0, h);
+    ctx.lineTo(0, pts[0][1] * h);
+    pts.forEach(([px, py]) => ctx.lineTo(px * w, py * h));
+    ctx.lineTo(w, h);
+    ctx.closePath();
+    ctx.fill();
   }
 
   function drawAuroraFrame(now) {
@@ -822,115 +852,86 @@
     const ctx = auroraCtx;
 
     ctx.globalCompositeOperation = "source-over";
+    ctx.filter = "none";
     ctx.clearRect(0, 0, w, h);
 
     const sky = ctx.createLinearGradient(0, 0, 0, h);
-    sky.addColorStop(0, "#020615");
-    sky.addColorStop(.52, "#071326");
-    sky.addColorStop(1, "#02050c");
+    sky.addColorStop(0, "#01040d");
+    sky.addColorStop(.34, "#04101d");
+    sky.addColorStop(.68, "#081725");
+    sky.addColorStop(1, "#02050a");
     ctx.fillStyle = sky;
     ctx.fillRect(0, 0, w, h);
 
-    // subtle horizon glow
-    const horizon = ctx.createRadialGradient(w * .5, h * .72, 0, w * .5, h * .72, w * .72);
-    horizon.addColorStop(0, "rgba(34,70,85,.20)");
-    horizon.addColorStop(.42, "rgba(20,43,70,.08)");
+    // faint airglow near horizon
+    const horizon = ctx.createRadialGradient(w * .52, h * .72, 0, w * .52, h * .72, w * .72);
+    horizon.addColorStop(0, "rgba(83,136,143,.17)");
+    horizon.addColorStop(.32, "rgba(39,79,102,.10)");
     horizon.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = horizon;
     ctx.fillRect(0, 0, w, h);
 
     // stars
     for (const star of auroraStars) {
-      const pulse = .72 + .28 * Math.sin(t * .8 + star.tw);
+      const pulse = .67 + .33 * Math.sin(t * star.sp + star.tw);
       ctx.globalAlpha = star.a * pulse;
-      ctx.fillStyle = "#eaf6ff";
+      ctx.fillStyle = star.r > 1.15 ? "#ffffff" : "#ddecff";
       ctx.beginPath();
       ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
       ctx.fill();
+      if (star.r > 1.05 && pulse > .86) {
+        ctx.globalAlpha = star.a * .23;
+        ctx.fillRect(star.x - star.r * 3, star.y - .35, star.r * 6, .7);
+        ctx.fillRect(star.x - .35, star.y - star.r * 3, .7, star.r * 6);
+      }
     }
     ctx.globalAlpha = 1;
 
+    const curtains = [
+      { layer:0, y:.12, amp:.085, depth:.33, speed:1.00, alpha:.22, color:[63,255,172] },
+      { layer:1, y:.16, amp:.105, depth:.37, speed:.82, alpha:.18, color:[72,230,197] },
+      { layer:2, y:.12, amp:.075, depth:.30, speed:1.13, alpha:.13, color:[121,132,255] },
+      { layer:3, y:.21, amp:.082, depth:.30, speed:.72, alpha:.15, color:[76,255,190] }
+    ];
+    curtains.forEach(cfg => drawAuroraCurtain(ctx, cfg, t, w, h));
+
+    // soft magenta fringe, common at high-energy edges
     ctx.save();
     ctx.globalCompositeOperation = "screen";
-    const ribbons = [
-      { y: .18, amp: .075, speed: .17, phase: .0, color: [73, 255, 184], width: .10 },
-      { y: .25, amp: .105, speed: -.12, phase: 1.7, color: [83, 221, 208], width: .13 },
-      { y: .31, amp: .085, speed: .10, phase: 3.2, color: [128, 118, 255], width: .11 },
-      { y: .22, amp: .055, speed: -.19, phase: 4.8, color: [107, 255, 203], width: .075 }
-    ];
-
-    for (let r = 0; r < ribbons.length; r++) {
-      const rb = ribbons[r];
-      const pts = [];
-      const step = Math.max(9, w / 120);
-      for (let x = -40; x <= w + 40; x += step) {
-        const nx = x / Math.max(w, 1);
-        const wave = Math.sin(nx * 7.2 + t * rb.speed * 5 + rb.phase) * rb.amp * h
-          + Math.sin(nx * 17.4 - t * rb.speed * 2.3 + rb.phase * .7) * rb.amp * h * .32
-          + Math.sin(nx * 2.7 + t * .11) * rb.amp * h * .25;
-        pts.push([x, h * rb.y + wave]);
-      }
-
-      const [cr, cg, cb] = rb.color;
-      const grad = ctx.createLinearGradient(0, h * .04, 0, h * .62);
-      grad.addColorStop(0, `rgba(${cr},${cg},${cb},0)`);
-      grad.addColorStop(.24, `rgba(${cr},${cg},${cb},.26)`);
-      grad.addColorStop(.58, `rgba(${cr},${cg},${cb},.10)`);
-      grad.addColorStop(1, `rgba(${cr},${cg},${cb},0)`);
-
-      // wide glow
-      ctx.beginPath();
-      pts.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y));
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
-      ctx.strokeStyle = grad;
-      ctx.lineWidth = Math.max(52, h * rb.width);
-      ctx.shadowColor = `rgba(${cr},${cg},${cb},.35)`;
-      ctx.shadowBlur = Math.max(34, h * .045);
-      ctx.globalAlpha = .85;
-      ctx.stroke();
-
-      // brighter core
-      ctx.shadowBlur = Math.max(18, h * .018);
-      ctx.lineWidth = Math.max(10, h * rb.width * .16);
-      ctx.globalAlpha = .68;
-      ctx.stroke();
-
-      // vertical curtains
-      ctx.shadowBlur = Math.max(22, h * .026);
-      ctx.lineWidth = 1;
-      for (let i = 1; i < pts.length - 1; i += 3) {
-        const [x, y] = pts[i];
-        const curtain = h * (.08 + .10 * (0.5 + 0.5 * Math.sin(i * .7 + t * .9 + rb.phase)));
-        const cg2 = ctx.createLinearGradient(0, y - curtain * .45, 0, y + curtain);
-        cg2.addColorStop(0, `rgba(${cr},${cg},${cb},0)`);
-        cg2.addColorStop(.25, `rgba(${cr},${cg},${cb},.12)`);
-        cg2.addColorStop(1, `rgba(${cr},${cg},${cb},0)`);
-        ctx.strokeStyle = cg2;
-        ctx.globalAlpha = .48;
-        ctx.beginPath();
-        ctx.moveTo(x, y - curtain * .45);
-        ctx.lineTo(x + Math.sin(t + i) * 4, y + curtain);
-        ctx.stroke();
-      }
-    }
+    ctx.filter = `blur(${Math.max(15, h*.02)}px)`;
+    const fringe = ctx.createRadialGradient(w*.66,h*.19,0,w*.66,h*.19,w*.42);
+    fringe.addColorStop(0,"rgba(183,72,184,.075)");
+    fringe.addColorStop(.5,"rgba(128,72,180,.03)");
+    fringe.addColorStop(1,"rgba(0,0,0,0)");
+    ctx.fillStyle=fringe;
+    ctx.fillRect(0,0,w,h*.62);
     ctx.restore();
-    ctx.globalAlpha = 1;
-    ctx.shadowBlur = 0;
 
-    // distant mountain silhouette
-    ctx.fillStyle = "rgba(1,4,8,.88)";
-    ctx.beginPath();
-    ctx.moveTo(0, h);
-    ctx.lineTo(0, h * .84);
-    const peaks = [
-      [0,.84],[.08,.77],[.15,.82],[.23,.70],[.31,.80],[.40,.73],[.48,.81],
-      [.57,.68],[.66,.79],[.74,.72],[.82,.80],[.91,.74],[1,.82]
-    ];
-    peaks.forEach(([px, py]) => ctx.lineTo(px * w, py * h));
-    ctx.lineTo(w, h);
-    ctx.closePath();
-    ctx.fill();
+    // distant + near mountains for depth
+    drawMountainLayer(ctx,[
+      [0,.85],[.07,.80],[.13,.83],[.20,.73],[.27,.81],[.34,.76],[.41,.84],
+      [.49,.75],[.56,.82],[.64,.72],[.71,.80],[.79,.75],[.87,.82],[.94,.77],[1,.84]
+    ],"rgba(7,14,19,.78)",w,h);
+
+    drawMountainLayer(ctx,[
+      [0,.91],[.08,.84],[.17,.90],[.25,.79],[.34,.88],[.44,.82],[.55,.90],
+      [.64,.77],[.73,.88],[.83,.82],[.92,.90],[1,.84]
+    ],"rgba(1,4,7,.96)",w,h);
+
+    // subtle foreground haze and vignette
+    const fog = ctx.createLinearGradient(0,h*.72,0,h);
+    fog.addColorStop(0,"rgba(83,139,139,0)");
+    fog.addColorStop(.72,"rgba(42,77,82,.08)");
+    fog.addColorStop(1,"rgba(4,8,10,.22)");
+    ctx.fillStyle=fog;
+    ctx.fillRect(0,h*.7,w,h*.3);
+
+    const vignette = ctx.createRadialGradient(w*.5,h*.42,w*.18,w*.5,h*.45,w*.72);
+    vignette.addColorStop(0,"rgba(0,0,0,0)");
+    vignette.addColorStop(.7,"rgba(0,0,0,.10)");
+    vignette.addColorStop(1,"rgba(0,0,0,.52)");
+    ctx.fillStyle=vignette;
+    ctx.fillRect(0,0,w,h);
 
     state.auroraRAF = requestAnimationFrame(drawAuroraFrame);
   }
