@@ -77,22 +77,22 @@
   ];
 
   BIRTHDAY_CONFIG.constellation = [
-    { text: "Hay gente que ocupa un lugar y gente que hace que ese lugar se sienta mejor. Vos hacés lo segundo.", photo: null },
-    { text: "Tenés esa costumbre de darte cuenta cuando alguien quedó un poquito atrás y esperarlo. Parece una pavada, pero no lo es.", photo: null },
-    { text: "Hacés sentir escuchada a la gente incluso en momentos en los que nadie más está prestando atención.", photo: null },
-    { text: "Tu forma de querer aparece muchísimo en los detalles, incluso en los que hacés sin darte cuenta.", photo: null },
-    { text: "Sos curiosa de una manera que hace que siempre haya algo nuevo de qué hablar.", photo: null },
-    { text: "Tenés opiniones fuertes, historias eternas y una personalidad imposible de confundir con la de nadie.", photo: null },
-    { text: "Podés convertir una conversación cualquiera en una historia que después alguien se acuerda.", photo: null },
-    { text: "Sos muchísimo más importante para la gente que te quiere de lo que probablemente imaginás.", photo: null },
-    { text: "Merecés amistades en las que nunca tengas que preguntarte si hay lugar para vos.", photo: null },
-    { text: "Merecés días tranquilos, días ridículos, días increíbles y gente con la que compartirlos.", photo: null },
-    { text: "Que nunca pierdas esa parte tuya que se fija en las cosas pequeñas.", photo: null },
-    { text: "Que tus 17 te sorprendan con cosas que hoy ni siquiera sabés que vas a amar.", photo: null },
-    { text: "Que nunca te falten razones para reírte hasta que te duela la cara.", photo: null },
-    { text: "Que te rodee gente que te escuche con la misma atención con la que vos sabés escuchar.", photo: null },
-    { text: "Que siempre tengas un lugar donde puedas ser exactamente vos, sin hacerte más chica para nadie.", photo: null },
-    { text: "Que dentro de diez años mires para atrás y pienses: qué lindo todo lo que todavía me faltaba vivir.", photo: null },
-    { text: "Y que el universo se porte bien con vos, porque si alguien se merece un poquito de magia extra, sos vos. ❤️", photo: null }
+    { text: "Tenés una forma muy tuya de hacer reír a la gente.", photo: null },
+    { text: "Sos de esas personas que se hacen notar incluso cuando no están intentando llamar la atención.", photo: null },
+    { text: "Tu sentido del humor es un caso aparte. Y sí, eso es un cumplido.", photo: null },
+    { text: "Tenés opiniones para todo y por eso hablar contigo nunca es aburrido.", photo: null },
+    { text: "Sos atenta con detalles que mucha gente ni ve.", photo: null },
+    { text: "Cuando alguien queda un poco atrás, vos te das cuenta.", photo: null },
+    { text: "Sabés escuchar de verdad, no solo esperar tu turno para hablar.", photo: null },
+    { text: "Tus historias jamás vienen en versión corta. Por suerte.", photo: null },
+    { text: "Tenés una energía que hace que cualquier plan sea más divertido.", photo: null },
+    { text: "Sos muy buena amiga, incluso muchas veces sin darte cuenta.", photo: null },
+    { text: "Tenés un carácter enorme y eso te hace muy vos.", photo: null },
+    { text: "Sos curiosa, intensa y difícil de aburrir. Gran combinación.", photo: null },
+    { text: "Tenés una capacidad especial para convertir cualquier cosa en anécdota.", photo: null },
+    { text: "Tu risa y tus caras deberían tener archivo propio.", photo: null },
+    { text: "Sos de esas personas que dan ganas de tener cerca.", photo: null },
+    { text: "El mundo sería bastante más aburrido sin vos.", photo: null },
+    { text: "17 corazones y todavía quedan cosas buenas para decir de vos. Eso ya dice bastante. ❤️", photo: null }
   ];
 })();
